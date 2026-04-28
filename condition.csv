@@ -1,0 +1,293 @@
+OPD,Day,Clinic,Diagnosis and Condition
+1,,Sx.Plastic,Keloid ทั่วร่างกาย
+1,,Sx.Plastic,จี้ไฝ/หูด ที่อยู่บริเวณใบหน้าทั้งหมด
+1,,Sx.Plastic,ก้อนบริเวณใบหน้าทั้งหมด
+1,,Sx.Plastic,ปวดกราม/ขากรรไกร
+1,,Sx.Plastic,Clef lip Clef palate
+1,Tuesday,,ไฝ/ติ่งเนื้อ/ปานดำ บริเวณใบหน้า
+1,Thursday,,ไฝ/ติ่งเนื้อ/ปานดำ บริเวณใบหน้า
+1,Tuesday,,หูดบริเวณมือ
+1,Thursday,,หูดบริเวณมือ
+1,,Sx.Plastic,ก้อนบริเวณใบหน้าทั้งหมดตัดที่แนวผม
+1,,Sx.Plastic,ก้อนบริเวณใบหู
+1,,Sx.Plastic,ก้อนบริเวณมือตัดที่ข้อมือ* สัปดาห์ที่สาย HAND เป็น Plastic *
+1,,Sx.Plastic,สาย HAND : มือและข้อมือ
+2,,Uro.Ped,Hypospadias
+2,,Uro.Ped,Epispadias
+2,,Uro.Ped,Phimosis
+2,,Uro.Ped,Undescended Testis
+2,,Uro.Ped,Circumcision
+2,,Neuro.Sx,embolization
+2,,Neuro.Sx,Brain tumor / ก้อนต่างๆในสมอง
+2,,Neuro.Sx,Trauma > 24 ชม. ที่มีประวัติศีรษะกระแทก
+2,,Neuro.Sx,Epilepsy refer for Sx.
+2,,Uro.Sx.,เปลี่ยนสาย Foley's cath อย่างเดียว (เคสเดิม)
+2,,Uro.Sx.,เคสใหม่ : Retained foley's cath จากห้องไหนให้ส่งกลับห้องเดิมเพื่อพิจารณา
+2,,Uro.Sx.,นิ่วทางเดินปัสสาวะ : รับเฉพาะ มีประวัติการรักษา / บันทึกข้อความ / ผลยืนยันว่าเป็นนิวทางเดินปัสสาวะจริง
+2,,Uro.Sx.,ปัสสาวะแสบขัด
+2,,Uro.Sx.,ปัสสาวะปนเลือด
+2,,Uro.Sx.,BPH
+2,,Uro.Sx.,CA
+2,Wednesday,,หูดบริเวณอวัยวะเพศชาย
+2,Thursday,,หูดบริเวณอวัยวะเพศชาย
+2,Wednesday,,Gonorrhea : ชาย
+2,Thursday,,Gonorrhea : ชาย
+3,Monday,,หูดบริเวณอวัยวะเพศหญิง
+3,Wednesday,,หูดบริเวณอวัยวะเพศหญิง
+3,Friday,,หูดบริเวณอวัยวะเพศหญิง
+3,Monday,,Gonorrhea : หญิง
+3,Wednesday,,Gonorrhea : หญิง
+3,Friday,,Gonorrhea : หญิง
+3,,Gyne,ปวดหน่วงท้องน้อย (ไม่มี ปัสสาวะแสบขัดร่วม)
+3,,Gyne,เลือดออกวางช่องคลอด
+3,,Gyne,ตรวจภายในประจำปี
+3,,Gyne,UPT positive มีเลือดออกทางช่องคลอดแต่ยังไม่ได้ฝากครรภ์
+3,,Gyne,Herpes
+3,,Gyne,Cyst
+3,,Gyne,ประจำเดือน / ตกขาวผิดปกติ
+3,,Gyne,หูด
+3,,Gyne,คลำพบก้อนบริเวณอวัยวะเพศ
+3,,Gyne,คลำพบก้อนบริเวณขาหนีบในตำแหน่งใกล้อวัยวะเพศ
+3,,Onco Gyne,Refer for CMT
+3,,Onco Gyne,Refer for Sx.
+4,,ANC,ฝากครรภ์
+4,,ANC,U/S
+4,,ANC,Amniocentesis
+4,,ANC,Cordocentesis
+4,,ANC,ให้คำปรึกษากรณีตั้งครรภ์ไม่พร้อม
+5,,Uro Gyne,POP
+5,,Uro Gyne,Cystocele
+5,,Uro Gyne,Vaginal stenosis
+5,,Uro Gyne,Uterine prolapse
+5,,Uro Gyne,Refer for Hysteroscopy
+5,,Uro Gyne,Refer for Cystectomy
+5,,Uro Gyne,Refer for Pessary
+5,,วางแผนครอบครัว,เตรียมความพร้อมก่อนมีบุตร
+5,,วางแผนครอบครัว,คุมกำเนิดมาตลอดเตรียมวางแผนมีบุตร
+6,,ภูมิแพ้,ภูมิแพ้ในระบบทางเดินหายใจ
+6,,ภูมิแพ้,ปรึกษาเรื่องการผ่าตัด Thyroid
+6,,ภูมิแพ้,ปรึกษาเรื่องการผ่าตัด Tonsils
+6,,ภูมิแพ้,ต่อม Adenoid โต
+6,,ภูมิแพ้,ผู้ป่วยมีอาการในระบบทางเดินหายใจที่ไม่มีไข้ร่วม
+6,,ภูมิแพ้,Skin Test - มีเฉพาะ test พื้นฐาน 9 test
+6,,ENT Ped,ปรึกษาเรื่องการผ่าตัด Thyid
+6,,ENT Ped,ปรึกษาเรื่องการผ่าตัด Tonsils
+6,,ENT Ped,ต่อม Adenoid โต
+6,,ENT Ped,ผู้ป่วยมีอาการในระบบทางเดินหายใจที่ไม่มีไข้ร่วม
+6,,นอนกรน OSA,Sleep test
+6,,นอนกรน OSA,นอนกรน
+6,,นอนกรน OSA,หยุดหายใจขณะหลับ
+6,,นอนกรน OSA,CPAP
+6,,ENT Tumor,มะเร็ง หู คอ จมูก
+6,,ENT Tumor,ก้อนบริเวณคอด้านหน้า
+6,,Sinus,Sinusitis
+6,,Sinus,ปรึกษาเรื่องการผ่าตัด Sinus
+6,,Sinus,ปรึกษาเรื่องการผ่าตัด Thyroid
+6,,Sinus,ปรึกษาเรื่องการผ่าตัด Tonsils
+6,,Sinus,ต่อม Adenoid โต
+6,,Sinus,ผู้ป่วยมีอาการในระบบทางเดินหายใจที่ไม่มีไข้ร่วม
+6,,โสตประสาทหู,การได้ยินลดลง
+6,,โสตประสาทหู,มีเสียงดังในหู่
+6,,โสตประสาทหู,Otitis
+6,,โสตประสาทหู,Otorrhea
+6,,โสตประสาทหู,Peripheral Vertigo
+6,,เครื่องช่วยฟัง,รับทั้ง New case และเคสเดิมต้องพบแพทย์เพื่อประเมินการได้ยินก่อน
+7,Monday,,ไฝ/ติ่งเนื้อ ใกล้ดวงตา
+7,Tuesday,,ไฝ/ติ่งเนื้อ ใกล้ดวงตา
+7,Wednesday,,ไฝ/ติ่งเนื้อ ใกล้ดวงตา
+7,Friday,,ไฝ/ติ่งเนื้อ ใกล้ดวงตา
+Retina,,จอประสาทตา,IOL Subluxation
+Retina,,จอประสาทตา,IOFB
+Retina,,จอประสาทตา,Endophthalmitis
+Retina,,จอประสาทตา,DR:Diabetic Retinopathy
+Retina,,จอประสาทตา,DME : Diabetic Macular Edema
+Retina,,จอประสาทตา,PDR : Proliferative Diabetic Retinopathy
+Retina,,จอประสาทตา,MH : Macular Hole
+Retina,,จอประสาทตา,RD:Retinal Detachment
+Retina,,จอประสาทตา,RRD: : Rhegmatogenous Retinal Detachment
+Retina,,จอประสาทตา,ERM : Epiretinal Membrane
+9,Monday,,ไฝ/ติ่งเนื้อ/หูด ประสงค์รักษาด้วยยา
+9,Tuesday,,ไฝ/ติ่งเนื้อ/หูด ประสงค์รักษาด้วยยา
+9,Wednesday,,ไฝ/ติ่งเนื้อ/หูด ประสงค์รักษาด้วยยา
+9,Thursday,,ไฝ/ติ่งเนื้อ/หูด ประสงค์รักษาด้วยยา
+9,Friday,,ไฝ/ติ่งเนื้อ/หูด ประสงค์รักษาด้วยยา
+9,Tuesday,,Adrenal mass Adrenal Vein Sampling (AVS)
+9,Thursday,,Adrenal mass Adrenal Vein Sampling (AVS)
+9,Tuesday,,Adrenal mass Biopsy
+9,Thursday,,Adrenal mass Biopsy
+9,,Neuro.Med,Refer Neuro med มหาราชฯ ครั้งแรก
+9,,Neuro.Med,ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับ
+9,,Neuro.Med,อายุรกรรมทางระบบประสาท เช่น Stroke Dementia
+9,,Neuro.Med,Parkinson Migraine เป็นต้น
+9,,Neuro.Med,ผู้ป่วยใหม่สงสัยโรคอายุรกรรมทางระบบประสาท
+9,,Neuro.Med,ผู้ป่วยเดิม OPD21(Neuro) ผิดนัดเกิน 1 ปี
+9,,Hemato,Refer Hemato มหาราชฯ
+9,,Hemato,Lab CBC ผิดปกติประสงค์พบแพทย์
+9,,Hemato,ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับอายุรกรรมโรคเลือด
+9,,Hemato,ผู้ป่วยเดิม OPD23(Hemato) ผิดนัดมีอาการ / ยาหมด
+9,,Cardio,Refer Cardio มหาราชฯ
+9,,Cardio,ผล EKG Abnormal
+9,,Cardio,ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับอายุรกรรมโรคหัวใจ แต่ไม่มีประวัติการักษา /บันทึกข้อความ / หนังสือส่งตัว
+9,,Cardio,ผู้ป่วยเดิม OPD22(Cardio) ผิดนัดมีอาการ / ยาหมด
+9,,Endocine,ผู้ป่วยใหม่ประสงค์ย้ายมารักษาต่อมีเอกสาร refer บันทึกข้อความ / ประวัติการรักษาที่ ไม่ได้ระบุ I131
+9,,Endocine,โรคอ้วน
+9,,Endocine,ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับ อายุรกรรมต่อมไร้ท่อหรือไทรอยด์ แต่ไม่มีประวัติการรักษา / บันทึกข้อความ / หนังสือส่งตัว
+9,,Onco,Refer Oncologist
+9,,Onco,Multiple metastasis
+9,,Onco,CMT
+9,,Onco,Systemic therapy
+9,,Onco,Target therapy
+9,,Onco,New Case CA refer consult for palliative
+9,,Onco,New Case CA refer consult for pain clinic
+9,,Nephro,Refer Nephro มหาราชฯ
+9,,Nephro,ค่าไตผิดปกติประสงค์พบแพทย์
+9,,Nephro,ปัสสาวะมีลักษณะผิดปกติ เช่น ปัสสาวะเป็นฟอง ปัสสาวะบ่อย ปัสสาวะสีเข้ม แต่ไม่มี อาการปวดหน่วงท้องน้อย / ปัสสาวะแสบขัดร่วม
+9,,Nephro,ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับอายุรกรรมโรคไต
+9,,Nephro,ผู้ป่วยเดิม OPD26(Nephro) ผิดนัดนัดมีอาการ / ยาหมด
+9,,GI,Refer GI med มหาราชฯ
+9,,GI,Stool occult blood positive ประสงค์พบแพทย์
+9,,GI,ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับอายุรกรรมโรคทางเดินอาหาร
+9,,GI,ผู้ป่วยเดิม OPD23(GI) ผิดนัดมีอาการ / ยาหมด
+9,,Rheumato,Refer Rheumatologist มหาราชฯ
+9,,Rheumato,มีอาการปวดข้อต่างๆตามร่างกายหลายข้อร่วมกัน
+9,,Rheumato,ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับอายุรกรรมโรคข้อและรูมาติสซั่ม
+9,,Rheumato,ผู้ป่วยเดิม OPD22(Rheumato) ผิดนัดมีอาการ / ยาหมด
+9,,Chest,Refer Chest med มหาราชฯ
+9,,Chest,ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับอายุรกรรมโรคปอด
+9,,Chest,ผู้ป่วยเดิม OPD22(Chest) ผิดนัดมีอาการ / ยาหมด
+10,,Spine,Refer Ortho Spine มหาราชฯ
+10,,Spine,กระดูกหลังคด
+10,,Spine,กระดูกทับเส้นประสาท
+10,,Spine,ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับโรคกระดูก ข้อ เอ็น และกล้ามเนื้อ
+10,,Spine,ผู้ป่วยเดิม OPD10 ผิดนัดมีอาการ / ยาหมด
+10,,Hand,Refer Ortho HAND มหาราชฯ
+10,,Hand,Lesion บริเวณมือและข้อมือ เช่น ก้อน / แผล เป็นต้น
+10,,Hand,ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับโรคกระดูก ข้อ เอ็น และกล้ามเนื้อ
+10,,Hand,ผู้ป่วยเดิม OPD10 ผิดนัดมีอาการ / ยาหมด
+10,,Adult,Refer Ortho มหาราชฯ
+10,,Adult,ปวดเข่า เข่าเสื่อม
+10,,Adult,กระดูกพรุน
+10,,Adult,ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับโรคกระดูก ข้อ เอ็น และกล้ามเนื้อ
+10,,Adult,ผู้ป่วยเดิม OPD10 ผิดนัดมีอาการ / ยาหมด
+10,,Trauma,Refer Ortho Trauma มหาราชฯ
+10,,Trauma,กระดูกหักจากการประสบอุบัติเหตุ
+10,,Trauma,ACL injury
+10,,Trauma,ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับโรคกระดูก ข้อ เอ็น และกล้ามเนื้อ
+10,,Trauma,ผู้ป่วยเดิม OPD10 ผิดนัดมีอาการ / ยาหมด
+10,,Ortho Tumor,Refer Ortho Tumor มหาราชฯ
+10,,Ortho Tumor,มะเร็งที่มีการแพร่กระจายไปยังกระดูก
+10,,Ortho Tumor,ก้อนบริเวณกระดูก
+10,,Ortho Tumor,ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับโรคกระดูก ข้อ เอ็น และกล้ามเนื้อ
+10,,Ortho Tumor,ผู้ป่วยเดิม OPD10 ผิดนัดมีอาการ / ยาหมด
+10,,Foot,Refer Ortho มหาราชฯ
+10,,Foot,รองช้ำ
+10,,Foot,เท้าแบน
+10,,Foot,ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับโรคกระดูก ข้อ เอ็น และกล้ามเนื้อ
+10,,Foot,ผู้ป่วยเดิม OPD10 ผิดนัดมีอาการ / ยาหมด
+10,,Ankle,Refer Ortho มหาราชฯ
+10,,Ankle,รองช้ำ
+10,,Ankle,เท้าแบน
+10,,Ankle,ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับโรคกระดูก ข้อ เอ็น และกล้ามเนื้อ
+10,,Ankle,ผู้ป่วยเดิม OPD10 ผิดนัดมีอาการ / ยาหมด
+10,,Ankle,เท้าปุก
+10,,Ankle,เท้าแบน
+10,,Foot,เท้าปุก
+10,,Foot,เท้าแบน
+21,Monday,,Adrenal mass Adrenal Vein Sampling (AVS)
+21,Wednesday,,Adrenal mass Adrenal Vein Sampling (AVS)
+21,Friday,,Adrenal mass Adrenal Vein Sampling (AVS)
+21,Monday,,Adrenal mass Biopsy
+21,Wednesday,,Adrenal mass Biopsy
+21,Friday,,Adrenal mass Biopsy
+21,Tuesday,Skin.Med,ปานแดง ต้องการ Laser
+21,Thursday,Skin.Med,ปานแดง ต้องการ Laser
+25,,ทันตกรรม,ขูดหินปูน
+25,,ทันตกรรม,อุนฟัน
+25,,ทันตกรรม,ถอนฟัน
+26,Friday,Skin.Med,ปานแดง ต้องการ Laser
+26,,Skin,Refer Skin med มหาราชฯ ครั้งแรก
+26,,Skin,ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับอายุรกรรมโรคผิวหนัง
+9,,Skin,ผู้ป่วยเดิม OPD26(Skin) ผิดนัดเกิน 1 ปี
+9,,Sx.HBP,TACE
+9,,Sx.HBP,PTBD
+101,,Sx.HBP,RFA
+101,,Sx.HBP,MWA
+101,,Sx.HBP,ICGR15
+101,,Sx.HBP,HIPEC
+101,,Sx.HBP,Symptomatic gall stone
+101,,Sx.HBP,Acute pancreatitis without retain ampullary / common bile duct stone
+101,,Sx.HBP,Intrahepatic duct stone
+101,,Sx.HBP,Acute cholecystitis without common bile duct stone
+101,,Sx.GI,Hemorrhoid
+101,,Sx.GI,Appendicitis
+101,,Sx.GI,Bowel obstruction
+101,,Sx.GI,Fistula in ano
+101,,Sx.GI,GIST
+101,,Sx.GI,มะเร็งทางเดินอาหาร refer for Sx.
+101,,Sx.GI,Inguinal Hernia
+101,,Sx.GI,Diaphragmatic Hernia
+101,,Sx.HNB,ก้อนต่างๆตามร่างกาย
+101,,Sx.HNB,ก้อนที่เต้านม
+101,,Sx.HNB,CA Breast
+101,,Sx.HNB,ยังไม่ได้ผ่าตัด ส่ง OPD101 ได้กรณี refer for Sx.
+101,,Sx.HNB,ยังไม่ได้ผ่าตัด ส่ง OPD101 ได้กรณี refer for CMT
+101,,Sx.VAS,Refer for AVF
+101,,Sx.VAS,เส้นเลือดขอด ( CVI )
+101,Tuesday,,Adrenal mass Rerfer for Adrenalectomy
+101,Monday,,ก้อนต่างๆตามลำตัว และ ศีรษะ
+101,Tuesday,,ก้อนต่างๆตามลำตัว และ ศีรษะ
+101,Wednesday,,ก้อนต่างๆตามลำตัว และ ศีรษะ
+101,Thursday,,ก้อนต่างๆตามลำตัว และ ศีรษะ
+101,Monday,,ก้อนบริเวณขาหนีบ R/O Hernia
+101,Tuesday,,ก้อนบริเวณขาหนีบ R/O Hernia
+101,Wednesday,,ก้อนบริเวณขาหนีบ R/O Hernia
+101,Thursday,,ก้อนบริเวณขาหนีบ R/O Hernia
+101,Monday,,ก้อนบริเวณทวารหนัก
+101,Wednesday,,ก้อนบริเวณอวัยวะเพศชายหรือใกล้เคียงอวัยวะเพศชาย
+101,Thursday,,ก้อนบริเวณอวัยวะเพศชายหรือใกล้เคียงอวัยวะเพศชาย
+101,Monday,,ก้อนบริเวณอวัยวะเพศหญิงหรือใกล้เคียงอวัยวะเพศหญิง
+101,Wednesday,,ก้อนบริเวณอวัยวะเพศหญิงหรือใกล้เคียงอวัยวะเพศหญิง
+101,Friday,,ก้อนบริเวณอวัยวะเพศหญิงหรือใกล้เคียงอวัยวะเพศหญิง
+101,Monday,,ไฝ/ติ่งเนื้อ ตามลำตัวประสงค์ต้ดออก
+101,Tuesday,,ไฝ/ติ่งเนื้อ ตามลำตัวประสงค์ต้ดออก
+101,Wednesday,,ไฝ/ติ่งเนื้อ ตามลำตัวประสงค์ต้ดออก
+101,Thursday,,ไฝ/ติ่งเนื้อ ตามลำตัวประสงค์ต้ดออก
+101,,Hand,ก้อนบริเวณข้อต่อตามร่างกาย
+101,,Hand,ก้อนบริเวณเมือตัดที่ข้อมือ * สัปดาห์ที่สาย HAND เป็น Ortho *
+10,,Ortho Tumor,ก้อนบริเวณข้อต่อตามร่างกาย
+10,,Ortho Tumor,ก้อนบริเวณเมือตัดที่ข้อมือ * สัปดาห์ที่สาย HAND เป็น Ortho *
+10,,,
+10,,,
+EID,,EID Clinic,ไข้ ร่วมกับไอ / เจ็บคอ / น้ำมูก / เสมหะ
+EID,,EID Clinic,ไข้ออกผื่น
+EID,,EID Clinic,อีสุกอีใส
+EID,,EID Clinic,งูสวัด ( ในระยะแพร่กระจายเชื้อ )
+EID,,EID Clinic,Covid-19
+EID,,EID Clinic,ไข้หวัดใหญ่
+EID,,EID Clinic,RSV
+EID,,EID Clinic,หิด
+EID,,EID - TB Clinic,ผู้ป่วยวัณโรคปอด
+EID,,EID - TB Clinic,ไอเรื้อรัง > 2 สัปดาห์
+EID,,EID - TB Clinic,เสมหะปนเลือด
+EID,,EID - TB Clinic,คัดกรองวัณโรคปอด
+EID,,EID - TB Clinic,FLOW R/O TB
+108,,ตรวจอายุรกรรมทั่วไป (108),สิทธิประกันสังคมมหาราชฯ
+108,,ตรวจอายุรกรรมทั่วไป (108),เคสเดิม 108 คลินิก
+108,,ตรวจอายุรกรรมทั่วไป (108),ตรวจสุขภาพเพื่อขอใบรับรองแพทย์ทั่วไป
+108,,ตรวจอายุรกรรมทั่วไป (108),ต่อใบขับขี่
+108,,ตรวจอายุรกรรมทั่วไป (108),สมัครเรียน / สมัครงาน (ภายในประเทศ)
+108,,ตรวจอายุรกรรมทั่วไป (108),อุปสมบท
+108,,ตรวจอายุรกรรมทั่วไป (108),ตรวจสุขภาพประจำปี
+108,,ตรวจอายุรกรรมทั่วไป (108),ตรวจภูมิคุ้มกันวัคซีน
+108,,ตรวจอายุรกรรมทั่วไป (108),คลินิกวัคซีนทางเลือกชนิดต่างๆ
+ศูนย์สุขภาพ มช.,,ตรวจอายุรกรรมทั่วไป (ศูนย์สุขภาพ มช.),นักศึกษามช.
+ศูนย์สุขภาพ มช.,,ตรวจอายุรกรรมทั่วไป (ศูนย์สุขภาพ มช.),บุคลากรภายในมหาวิทยาลัยเชียงใหม่
+ศูนย์สุขภาพ มช.,,ตรวจอายุรกรรมทั่วไป (ศูนย์สุขภาพ มช.),บริการทำแผล
+ศูนย์สุขภาพ มช.,,ตรวจอายุรกรรมทั่วไป (ศูนย์สุขภาพ มช.),ตรวจภูมิคุ้มกันวัคซีน
+ศูนย์สุขภาพ มช.,,ตรวจอายุรกรรมทั่วไป (ศูนย์สุขภาพ มช.),คลินิกวัคซีนทางเลือกชนิดต่างๆ
+ศูนย์สุขภาพ มช.,,ตรวจอายุรกรรมทั่วไป (ศูนย์สุขภาพ มช.),ศูนย์สุขใจ (CMU Mental Health Center)
+Pain,,Pain clinic,Pain
+Pain,,Pain clinic,Chronic Pain
+Pain,,Pain clinic,ปวดเรื้อรัง
+Pain,,Pain clinic,คลินิกแก้ปวด
+Pain,,Pain clinic,Consult Pain

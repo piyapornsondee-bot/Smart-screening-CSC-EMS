@@ -1,0 +1,178 @@
+<?php
+// summary.php
+$servername = "localhost";
+$username = "root";
+$password = "";
+
+try {
+    $conn = new PDO("mysql:host=$servername;dbname=smart_screening;charset=utf8mb4", $username, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Get unique OPDs
+    $stmt = $conn->query("SELECT DISTINCT opd FROM schedule_opd ORDER BY opd ASC");
+    $opds = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+} catch(PDOException $e) {
+    die("Connection failed: " . $e->getMessage());
+}
+?>
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สรุปตารางรายสัปดาห์ - Smart Screening</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="glass-theme">
+    <header id="top-bar">
+        <div class="top-bar-inner">
+            <div class="brand">
+                <div class="brand-icon">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M30 32C30 25.4 35.4 20 42 20H80V36H46V44H70C78.3 44 85 50.7 85 59V61C85 69.3 78.3 76 70 76H30V60H69V52H45C36.7 52 30 45.3 30 37V32Z" fill="white"/>
+                        <rect x="12" y="44" width="12" height="12" fill="white" opacity="0.8"/>
+                        <rect x="24" y="58" width="10" height="10" fill="white" opacity="0.5"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1>Smart Screening</h1>
+                    <span class="brand-sub">Weekly Schedule Overview</span>
+                </div>
+            </div>
+            <div class="top-bar-right">
+                <a href="index.php" class="nav-link">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>กลับหน้าหลัก</span>
+                </a>
+                <div class="top-bar-status">
+                    <span class="status-dot"></span>
+                    <span class="status-text">ระบบพร้อมใช้งาน</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main id="app">
+        <section class="results-header" style="justify-content: center; margin-bottom: 30px; flex-direction: column; text-align: center;">
+            <h2 style="font-size: 24px; margin-bottom: 10px;">ตารางตรวจรายสัปดาห์</h2>
+            <p style="color: var(--mint-600);">เลือก OPD ที่ต้องการดูตารางเวลาตลอดทั้งสัปดาห์</p>
+        </section>
+
+        <section id="opd-selection">
+            <div class="opd-selector">
+                <?php foreach ($opds as $opd): ?>
+                    <button type="button" class="opd-select-btn" data-opd="<?= htmlspecialchars($opd) ?>">
+                        OPD <?= htmlspecialchars($opd) ?>
+                    </button>
+                <?php endforeach; ?>
+            </div>
+        </section>
+
+        <section id="weekly-schedule-view" class="weekly-schedule-container">
+            <!-- Schedule will be loaded here -->
+            <div id="schedule-content">
+                <div class="empty-state">
+                    <i class="fa-solid fa-hand-pointer"></i>
+                    <p class="empty-title">กรุณาเลือก OPD ด้านบน</p>
+                    <p class="empty-sub">เพื่อแสดงตารางคลินิกที่ออกตรวจในแต่ละวัน</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+    $(function(){
+        $('.opd-select-btn').click(function(){
+            const opd = $(this).data('opd');
+            $('.opd-select-btn').removeClass('active');
+            $(this).addClass('active');
+
+            loadSchedule(opd);
+        });
+
+        function loadSchedule(opd) {
+            const container = $('#schedule-content');
+            container.html('<div class="loading-state"><div class="spinner"></div><span>กำลังโหลดข้อมูล...</span></div>');
+
+            $.ajax({
+                url: 'get_weekly_schedule.php',
+                type: 'GET',
+                data: { opd: opd },
+                dataType: 'json',
+                success: function(data) {
+                    if (data.error) {
+                        container.html('<div class="error-state"><p>' + data.error + '</p></div>');
+                        return;
+                    }
+
+                    renderSchedule(data);
+                },
+                error: function() {
+                    container.html('<div class="error-state"><i class="fa-solid fa-triangle-exclamation"></i><p>ไม่สามารถโหลดข้อมูลได้</p></div>');
+                }
+            });
+        }
+
+        function renderSchedule(data) {
+            const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+            const dayNames = {
+                'Monday': 'วันจันทร์',
+                'Tuesday': 'วันอังคาร',
+                'Wednesday': 'วันพุธ',
+                'Thursday': 'วันพฤหัสบดี',
+                'Friday': 'วันศุกร์',
+                'Saturday': 'วันเสาร์',
+                'Sunday': 'วันอาทิตย์'
+            };
+
+            let html = '';
+            
+            days.forEach(day => {
+                const clinics = data[day] || [];
+                html += `
+                <div class="day-row">
+                    <div class="day-label ${day}">${dayNames[day]}</div>
+                    <div class="day-content">`;
+                
+                if (clinics.length === 0) {
+                    html += '<div class="empty-day">ไม่มีคลินิกออกตรวจ</div>';
+                } else {
+                    clinics.forEach(c => {
+                        let ageClass, ageText;
+                        if (!c.age_group || c.age_group.trim() === '') {
+                            ageClass = 'age-all';
+                            ageText = 'ทุกช่วงอายุ';
+                        } else if (c.age_group.includes('>=15')) {
+                            ageClass = 'age-adult';
+                            ageText = '≥15 ปี';
+                        } else {
+                            ageClass = 'age-ped';
+                            ageText = '<15 ปี';
+                        }
+                        
+                        html += `
+                        <div class="clinic-mini-card">
+                            <div class="clinic-mini-name">${c.clinic}</div>
+                            <div class="clinic-mini-meta">
+                                <div class="clinic-mini-time">
+                                    <i class="fa-regular fa-clock"></i> ${c.time_slot || '8.00 - 16.00'}
+                                </div>
+                                <div class="clinic-mini-age ${ageClass}">${ageText}</div>
+                            </div>
+                        </div>`;
+                    });
+                }
+                
+                html += '</div></div>';
+            });
+
+            $('#schedule-content').hide().html(html).fadeIn(400);
+        }
+    });
+    </script>
+</body>
+</html>
