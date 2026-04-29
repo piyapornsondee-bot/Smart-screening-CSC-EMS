@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>สมุดเบอร์โทรศัพท์ - Smart Screening</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=3">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         .directory-container {
@@ -141,6 +143,7 @@
         }
     </style>
 </head>
+
 <body>
     <header class="top-bar">
         <div class="top-bar-inner">
@@ -167,112 +170,4360 @@
         <div class="directory-search-container">
             <div class="directory-search-wrapper">
                 <i class="fas fa-filter"></i>
-                <input type="text" id="directory-search" class="directory-search-input" placeholder="ค้นหาหน่วยงาน หรือ เบอร์โทรศัพท์...">
+                <input type="text" id="directory-search" class="directory-search-input"
+                    placeholder="ค้นหาหน่วยงาน หรือ เบอร์โทรศัพท์...">
             </div>
         </div>
 
-        <div class="directory-container">
-            <!-- Section 1: OPD -->
-            <section class="directory-section" data-section="opd">
-                <div class="directory-header">
-                    <i class="fas fa-hospital-user"></i>
-                    <h3>เบอร์โทรภายใน OPD</h3>
-                </div>
-                <div class="directory-table-wrapper">
-                    <table class="directory-table">
-                        <tbody id="opd-list">
-                            <!-- Items will be loaded by JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- Section 2: Other -->
-            <section class="directory-section" data-section="other">
-                <div class="directory-header">
-                    <i class="fas fa-building"></i>
-                    <h3>หน่วยงานอื่นๆ</h3>
-                </div>
-                <div class="directory-table-wrapper">
-                    <table class="directory-table">
-                        <tbody id="other-list">
-                            <!-- Items will be loaded by JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- Section 3: Affiliates -->
-            <section class="directory-section" data-section="affiliate">
-                <div class="directory-header">
-                    <i class="fas fa-star"></i>
-                    <h3>โรงพยาบาลในเครือ / ศูนย์พิเศษ</h3>
-                </div>
-                <div class="directory-table-wrapper">
-                    <table class="directory-table">
-                        <tbody id="affiliate-list">
-                            <!-- Items will be loaded by JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </section>
+        <div class="directory-container" id="directory-content">
+            <!-- Sections will be injected here -->
         </div>
     </main>
 
     <script>
-        const opd_directory = [
-            ["OPD 1", "35735, 36335"], ["OPD 2", "35736, 35739"], ["OPD 3", "35741, 36341"], ["OPD 4", "35742, 35720"], ["OPD 5", "35743"],
-            ["OPD 6", "35745, 36692"], ["OPD 7", "35748, 36680"], ["OPD Retina", "35903, 35910"], ["OPD 9", "35740, 35751"], ["OPD 10", "35750, 35760"],
-            ["OPD 20", "34436, 36366"], ["OPD 21", "35752, 36752"], ["OPD 22", "35753, 36353"], ["OPD 23", "35754, 36354"], ["OPD 24", "35755, 36755"],
-            ["จิตเวชเด็ก", "35960"], ["OPD 25", "35699, 36399"], ["OPD 26", "35756, 36766"], ["OPD 27", "35757"], ["Ped Cardio", "35419"],
-            ["OPD 28", "35758, 36358"], ["OPD 29", "35759"], ["OPD 101", "35728, 35729"], ["OPD 110", "34605, 35726"], ["OPD 108", "35170, 36182"],
-            ["OPD RT", "34430, 35492"], ["Med Non", "36711, 36713"], ["Fam med", "36363"], ["Pain Clinic", "36379"], ["EID", "38589, 38591"],
-            ["EID - TB", "38723"], ["ดื้อยา", "36338"], ["ศูนย์สุขภาพมช.", "43181"], ["OPD สงฆ์", "35966"], ["Ostomy", "36527"],
-            ["ทำแผล", "34408"], ["ฉีดยา", "35734"], ["นิติเวชชั้น 3", "34433"], ["Triage", "35677"], ["ER", "36333"],
-            ["Observe", "36334, 35737"], ["เวชระเบียน", "35636, 36647"], ["DNA", "34560"], ["ICWN", "35714, 35724"], ["Telemed", "34160"]
-        ];
-
-        const other_directory = [
-            ["ศูนย์รับเงิน 1", "35249, 35250"], ["ศูนย์รับเงิน 2", "35247, 35248"], ["ศูนย์รับเงิน 3", "36531"], ["บัตรทอง OPD", "36535, 36577"],
-            ["บัตรทอง IPD", "35602"], ["ประกันสังคม", "35181, 36181"], ["สังคมสงเคราะห์", "35650"], ["ศูนย์จองห้อง", "36385, 34489"],
-            ["ห้องยา 30", "35616, 36316"], ["ห้องยา 16", "36530"], ["ศูนย์ส่งยา ปณ.", "34005"], ["อุปกรณ์ฝากขาย", "34428, 34429"],
-            ["Lab center", "35645"], ["ศูนย์รับ Lab", "36240, 36244"], ["X-ray 33", "35453, 35454"], ["นัดคิว CT", "36198"],
-            ["นัดคิว MMG", "36554"], ["นัดคิว U/S", "36707"], ["ศูนย์สร้างเสริม", "35710, 36561"], ["สำนักงาน OPD", "35731"],
-            ["ฝ่ายการ", "35721"], ["ขอประวัติ", "35601"], ["สนง.ผอ.", "36155"], ["สนง.คณบดี", "36144"], ["IT", "35919"],
-            ["ช่างบันไดเลื่อน", "36218"], ["รปภ.", "35500, 38700"], ["เปล", "35692"], ["บ้านพักญาติ", "34738"]
-        ];
-
-        const affiliate_directory = [
-            ["ศรีพัฒน์", "36900, 36901"], ["ศูนย์ความเป็นเลิศ", "34700, 34701"], ["GMC", "20666"], ["มีบุตรยาก", "34714, 34715"]
-        ];
-
-        function renderList(list, elementId) {
-            const container = document.getElementById(elementId);
-            let html = '';
-            list.forEach(item => {
-                html += `<tr><td class="dept-col">${item[0]}</td><td class="phone-col">${item[1]}</td></tr>`;
-            });
-            container.innerHTML = html;
+        document.addEventListener('DOMContentLoaded', function () {
+            // Standalone Data
+            const appData = {
+    "conditions": [
+        {
+            "opd": "1",
+            "day_week": "",
+            "clinic": "Sx.Plastic",
+            "diagnosis": "Keloid ทั่วร่างกาย"
+        },
+        {
+            "opd": "1",
+            "day_week": "",
+            "clinic": "Sx.Plastic",
+            "diagnosis": "จี้ไฝ\/หูด ที่อยู่บริเวณใบหน้าทั้งหมด"
+        },
+        {
+            "opd": "1",
+            "day_week": "",
+            "clinic": "Sx.Plastic",
+            "diagnosis": "ก้อนบริเวณใบหน้าทั้งหมด"
+        },
+        {
+            "opd": "1",
+            "day_week": "",
+            "clinic": "Sx.Plastic",
+            "diagnosis": "ปวดกราม\/ขากรรไกร"
+        },
+        {
+            "opd": "1",
+            "day_week": "",
+            "clinic": "Sx.Plastic",
+            "diagnosis": "Clef lip Clef palate"
+        },
+        {
+            "opd": "1",
+            "day_week": "Tuesday",
+            "clinic": "",
+            "diagnosis": "ไฝ\/ติ่งเนื้อ\/ปานดำ บริเวณใบหน้า"
+        },
+        {
+            "opd": "1",
+            "day_week": "Thursday",
+            "clinic": "",
+            "diagnosis": "ไฝ\/ติ่งเนื้อ\/ปานดำ บริเวณใบหน้า"
+        },
+        {
+            "opd": "1",
+            "day_week": "Tuesday",
+            "clinic": "",
+            "diagnosis": "หูดบริเวณมือ"
+        },
+        {
+            "opd": "1",
+            "day_week": "Thursday",
+            "clinic": "",
+            "diagnosis": "หูดบริเวณมือ"
+        },
+        {
+            "opd": "1",
+            "day_week": "",
+            "clinic": "Sx.Plastic",
+            "diagnosis": "ก้อนบริเวณใบหน้าทั้งหมดตัดที่แนวผม"
+        },
+        {
+            "opd": "1",
+            "day_week": "",
+            "clinic": "Sx.Plastic",
+            "diagnosis": "ก้อนบริเวณใบหู"
+        },
+        {
+            "opd": "1",
+            "day_week": "",
+            "clinic": "Sx.Plastic",
+            "diagnosis": "ก้อนบริเวณมือตัดที่ข้อมือ* สัปดาห์ที่สาย HAND เป็น Plastic *"
+        },
+        {
+            "opd": "1",
+            "day_week": "",
+            "clinic": "Sx.Plastic",
+            "diagnosis": "สาย HAND : มือและข้อมือ"
+        },
+        {
+            "opd": "2",
+            "day_week": "",
+            "clinic": "Uro.Ped",
+            "diagnosis": "Hypospadias"
+        },
+        {
+            "opd": "2",
+            "day_week": "",
+            "clinic": "Uro.Ped",
+            "diagnosis": "Epispadias"
+        },
+        {
+            "opd": "2",
+            "day_week": "",
+            "clinic": "Uro.Ped",
+            "diagnosis": "Phimosis"
+        },
+        {
+            "opd": "2",
+            "day_week": "",
+            "clinic": "Uro.Ped",
+            "diagnosis": "Undescended Testis"
+        },
+        {
+            "opd": "2",
+            "day_week": "",
+            "clinic": "Uro.Ped",
+            "diagnosis": "Circumcision"
+        },
+        {
+            "opd": "2",
+            "day_week": "",
+            "clinic": "Neuro.Sx",
+            "diagnosis": "embolization"
+        },
+        {
+            "opd": "2",
+            "day_week": "",
+            "clinic": "Neuro.Sx",
+            "diagnosis": "Brain tumor \/ ก้อนต่างๆในสมอง"
+        },
+        {
+            "opd": "2",
+            "day_week": "",
+            "clinic": "Neuro.Sx",
+            "diagnosis": "Trauma > 24 ชม. ที่มีประวัติศีรษะกระแทก"
+        },
+        {
+            "opd": "2",
+            "day_week": "",
+            "clinic": "Neuro.Sx",
+            "diagnosis": "Epilepsy refer for Sx."
+        },
+        {
+            "opd": "2",
+            "day_week": "",
+            "clinic": "Uro.Sx.",
+            "diagnosis": "เปลี่ยนสาย Foley's cath อย่างเดียว (เคสเดิม)"
+        },
+        {
+            "opd": "2",
+            "day_week": "",
+            "clinic": "Uro.Sx.",
+            "diagnosis": "เคสใหม่ : Retained foley's cath จากห้องไหนให้ส่งกลับห้องเดิมเพื่อพิจารณา"
+        },
+        {
+            "opd": "2",
+            "day_week": "",
+            "clinic": "Uro.Sx.",
+            "diagnosis": "นิ่วทางเดินปัสสาวะ : รับเฉพาะ มีประวัติการรักษา \/ บันทึกข้อความ \/ ผลยืนยันว่าเป็นนิวทางเดินปัสสาวะจริง"
+        },
+        {
+            "opd": "2",
+            "day_week": "",
+            "clinic": "Uro.Sx.",
+            "diagnosis": "ปัสสาวะแสบขัด"
+        },
+        {
+            "opd": "2",
+            "day_week": "",
+            "clinic": "Uro.Sx.",
+            "diagnosis": "ปัสสาวะปนเลือด"
+        },
+        {
+            "opd": "2",
+            "day_week": "",
+            "clinic": "Uro.Sx.",
+            "diagnosis": "BPH"
+        },
+        {
+            "opd": "2",
+            "day_week": "",
+            "clinic": "Uro.Sx.",
+            "diagnosis": "CA"
+        },
+        {
+            "opd": "2",
+            "day_week": "Wednesday",
+            "clinic": "",
+            "diagnosis": "หูดบริเวณอวัยวะเพศชาย"
+        },
+        {
+            "opd": "2",
+            "day_week": "Thursday",
+            "clinic": "",
+            "diagnosis": "หูดบริเวณอวัยวะเพศชาย"
+        },
+        {
+            "opd": "2",
+            "day_week": "Wednesday",
+            "clinic": "",
+            "diagnosis": "Gonorrhea : ชาย"
+        },
+        {
+            "opd": "2",
+            "day_week": "Thursday",
+            "clinic": "",
+            "diagnosis": "Gonorrhea : ชาย"
+        },
+        {
+            "opd": "3",
+            "day_week": "Monday",
+            "clinic": "",
+            "diagnosis": "หูดบริเวณอวัยวะเพศหญิง"
+        },
+        {
+            "opd": "3",
+            "day_week": "Wednesday",
+            "clinic": "",
+            "diagnosis": "หูดบริเวณอวัยวะเพศหญิง"
+        },
+        {
+            "opd": "3",
+            "day_week": "Friday",
+            "clinic": "",
+            "diagnosis": "หูดบริเวณอวัยวะเพศหญิง"
+        },
+        {
+            "opd": "3",
+            "day_week": "Monday",
+            "clinic": "",
+            "diagnosis": "Gonorrhea : หญิง"
+        },
+        {
+            "opd": "3",
+            "day_week": "Wednesday",
+            "clinic": "",
+            "diagnosis": "Gonorrhea : หญิง"
+        },
+        {
+            "opd": "3",
+            "day_week": "Friday",
+            "clinic": "",
+            "diagnosis": "Gonorrhea : หญิง"
+        },
+        {
+            "opd": "3",
+            "day_week": "",
+            "clinic": "Gyne",
+            "diagnosis": "ปวดหน่วงท้องน้อย (ไม่มี ปัสสาวะแสบขัดร่วม)"
+        },
+        {
+            "opd": "3",
+            "day_week": "",
+            "clinic": "Gyne",
+            "diagnosis": "เลือดออกวางช่องคลอด"
+        },
+        {
+            "opd": "3",
+            "day_week": "",
+            "clinic": "Gyne",
+            "diagnosis": "ตรวจภายในประจำปี"
+        },
+        {
+            "opd": "3",
+            "day_week": "",
+            "clinic": "Gyne",
+            "diagnosis": "UPT positive มีเลือดออกทางช่องคลอดแต่ยังไม่ได้ฝากครรภ์"
+        },
+        {
+            "opd": "3",
+            "day_week": "",
+            "clinic": "Gyne",
+            "diagnosis": "Herpes"
+        },
+        {
+            "opd": "3",
+            "day_week": "",
+            "clinic": "Gyne",
+            "diagnosis": "Cyst"
+        },
+        {
+            "opd": "3",
+            "day_week": "",
+            "clinic": "Gyne",
+            "diagnosis": "ประจำเดือน \/ ตกขาวผิดปกติ"
+        },
+        {
+            "opd": "3",
+            "day_week": "",
+            "clinic": "Gyne",
+            "diagnosis": "หูด"
+        },
+        {
+            "opd": "3",
+            "day_week": "",
+            "clinic": "Gyne",
+            "diagnosis": "คลำพบก้อนบริเวณอวัยวะเพศ"
+        },
+        {
+            "opd": "3",
+            "day_week": "",
+            "clinic": "Gyne",
+            "diagnosis": "คลำพบก้อนบริเวณขาหนีบในตำแหน่งใกล้อวัยวะเพศ"
+        },
+        {
+            "opd": "3",
+            "day_week": "",
+            "clinic": "Onco Gyne",
+            "diagnosis": "Refer for CMT"
+        },
+        {
+            "opd": "3",
+            "day_week": "",
+            "clinic": "Onco Gyne",
+            "diagnosis": "Refer for Sx."
+        },
+        {
+            "opd": "4",
+            "day_week": "",
+            "clinic": "ANC",
+            "diagnosis": "ฝากครรภ์"
+        },
+        {
+            "opd": "4",
+            "day_week": "",
+            "clinic": "ANC",
+            "diagnosis": "U\/S"
+        },
+        {
+            "opd": "4",
+            "day_week": "",
+            "clinic": "ANC",
+            "diagnosis": "Amniocentesis"
+        },
+        {
+            "opd": "4",
+            "day_week": "",
+            "clinic": "ANC",
+            "diagnosis": "Cordocentesis"
+        },
+        {
+            "opd": "4",
+            "day_week": "",
+            "clinic": "ANC",
+            "diagnosis": "ให้คำปรึกษากรณีตั้งครรภ์ไม่พร้อม"
+        },
+        {
+            "opd": "5",
+            "day_week": "",
+            "clinic": "Uro Gyne",
+            "diagnosis": "POP"
+        },
+        {
+            "opd": "5",
+            "day_week": "",
+            "clinic": "Uro Gyne",
+            "diagnosis": "Cystocele"
+        },
+        {
+            "opd": "5",
+            "day_week": "",
+            "clinic": "Uro Gyne",
+            "diagnosis": "Vaginal stenosis"
+        },
+        {
+            "opd": "5",
+            "day_week": "",
+            "clinic": "Uro Gyne",
+            "diagnosis": "Uterine prolapse"
+        },
+        {
+            "opd": "5",
+            "day_week": "",
+            "clinic": "Uro Gyne",
+            "diagnosis": "Refer for Hysteroscopy"
+        },
+        {
+            "opd": "5",
+            "day_week": "",
+            "clinic": "Uro Gyne",
+            "diagnosis": "Refer for Cystectomy"
+        },
+        {
+            "opd": "5",
+            "day_week": "",
+            "clinic": "Uro Gyne",
+            "diagnosis": "Refer for Pessary"
+        },
+        {
+            "opd": "5",
+            "day_week": "",
+            "clinic": "วางแผนครอบครัว",
+            "diagnosis": "เตรียมความพร้อมก่อนมีบุตร"
+        },
+        {
+            "opd": "5",
+            "day_week": "",
+            "clinic": "วางแผนครอบครัว",
+            "diagnosis": "คุมกำเนิดมาตลอดเตรียมวางแผนมีบุตร"
+        },
+        {
+            "opd": "6",
+            "day_week": "",
+            "clinic": "ภูมิแพ้",
+            "diagnosis": "ภูมิแพ้ในระบบทางเดินหายใจ"
+        },
+        {
+            "opd": "6",
+            "day_week": "",
+            "clinic": "ภูมิแพ้",
+            "diagnosis": "ปรึกษาเรื่องการผ่าตัด Thyroid"
+        },
+        {
+            "opd": "6",
+            "day_week": "",
+            "clinic": "ภูมิแพ้",
+            "diagnosis": "ปรึกษาเรื่องการผ่าตัด Tonsils"
+        },
+        {
+            "opd": "6",
+            "day_week": "",
+            "clinic": "ภูมิแพ้",
+            "diagnosis": "ต่อม Adenoid โต"
+        },
+        {
+            "opd": "6",
+            "day_week": "",
+            "clinic": "ภูมิแพ้",
+            "diagnosis": "ผู้ป่วยมีอาการในระบบทางเดินหายใจที่ไม่มีไข้ร่วม"
+        },
+        {
+            "opd": "6",
+            "day_week": "",
+            "clinic": "ภูมิแพ้",
+            "diagnosis": "Skin Test - มีเฉพาะ test พื้นฐาน 9 test"
+        },
+        {
+            "opd": "6",
+            "day_week": "",
+            "clinic": "ENT Ped",
+            "diagnosis": "ปรึกษาเรื่องการผ่าตัด Thyid"
+        },
+        {
+            "opd": "6",
+            "day_week": "",
+            "clinic": "ENT Ped",
+            "diagnosis": "ปรึกษาเรื่องการผ่าตัด Tonsils"
+        },
+        {
+            "opd": "6",
+            "day_week": "",
+            "clinic": "ENT Ped",
+            "diagnosis": "ต่อม Adenoid โต"
+        },
+        {
+            "opd": "6",
+            "day_week": "",
+            "clinic": "ENT Ped",
+            "diagnosis": "ผู้ป่วยมีอาการในระบบทางเดินหายใจที่ไม่มีไข้ร่วม"
+        },
+        {
+            "opd": "6",
+            "day_week": "",
+            "clinic": "นอนกรน OSA",
+            "diagnosis": "Sleep test"
+        },
+        {
+            "opd": "6",
+            "day_week": "",
+            "clinic": "นอนกรน OSA",
+            "diagnosis": "นอนกรน"
+        },
+        {
+            "opd": "6",
+            "day_week": "",
+            "clinic": "นอนกรน OSA",
+            "diagnosis": "หยุดหายใจขณะหลับ"
+        },
+        {
+            "opd": "6",
+            "day_week": "",
+            "clinic": "นอนกรน OSA",
+            "diagnosis": "CPAP"
+        },
+        {
+            "opd": "6",
+            "day_week": "",
+            "clinic": "ENT Tumor",
+            "diagnosis": "มะเร็ง หู คอ จมูก"
+        },
+        {
+            "opd": "6",
+            "day_week": "",
+            "clinic": "ENT Tumor",
+            "diagnosis": "ก้อนบริเวณคอด้านหน้า"
+        },
+        {
+            "opd": "6",
+            "day_week": "",
+            "clinic": "Sinus",
+            "diagnosis": "Sinusitis"
+        },
+        {
+            "opd": "6",
+            "day_week": "",
+            "clinic": "Sinus",
+            "diagnosis": "ปรึกษาเรื่องการผ่าตัด Sinus"
+        },
+        {
+            "opd": "6",
+            "day_week": "",
+            "clinic": "Sinus",
+            "diagnosis": "ปรึกษาเรื่องการผ่าตัด Thyroid"
+        },
+        {
+            "opd": "6",
+            "day_week": "",
+            "clinic": "Sinus",
+            "diagnosis": "ปรึกษาเรื่องการผ่าตัด Tonsils"
+        },
+        {
+            "opd": "6",
+            "day_week": "",
+            "clinic": "Sinus",
+            "diagnosis": "ต่อม Adenoid โต"
+        },
+        {
+            "opd": "6",
+            "day_week": "",
+            "clinic": "Sinus",
+            "diagnosis": "ผู้ป่วยมีอาการในระบบทางเดินหายใจที่ไม่มีไข้ร่วม"
+        },
+        {
+            "opd": "6",
+            "day_week": "",
+            "clinic": "โสตประสาทหู",
+            "diagnosis": "การได้ยินลดลง"
+        },
+        {
+            "opd": "6",
+            "day_week": "",
+            "clinic": "โสตประสาทหู",
+            "diagnosis": "มีเสียงดังในหู่"
+        },
+        {
+            "opd": "6",
+            "day_week": "",
+            "clinic": "โสตประสาทหู",
+            "diagnosis": "Otitis"
+        },
+        {
+            "opd": "6",
+            "day_week": "",
+            "clinic": "โสตประสาทหู",
+            "diagnosis": "Otorrhea"
+        },
+        {
+            "opd": "6",
+            "day_week": "",
+            "clinic": "โสตประสาทหู",
+            "diagnosis": "Peripheral Vertigo"
+        },
+        {
+            "opd": "6",
+            "day_week": "",
+            "clinic": "เครื่องช่วยฟัง",
+            "diagnosis": "รับทั้ง New case และเคสเดิมต้องพบแพทย์เพื่อประเมินการได้ยินก่อน"
+        },
+        {
+            "opd": "7",
+            "day_week": "Monday",
+            "clinic": "",
+            "diagnosis": "ไฝ\/ติ่งเนื้อ ใกล้ดวงตา"
+        },
+        {
+            "opd": "7",
+            "day_week": "Tuesday",
+            "clinic": "",
+            "diagnosis": "ไฝ\/ติ่งเนื้อ ใกล้ดวงตา"
+        },
+        {
+            "opd": "7",
+            "day_week": "Wednesday",
+            "clinic": "",
+            "diagnosis": "ไฝ\/ติ่งเนื้อ ใกล้ดวงตา"
+        },
+        {
+            "opd": "7",
+            "day_week": "Friday",
+            "clinic": "",
+            "diagnosis": "ไฝ\/ติ่งเนื้อ ใกล้ดวงตา"
+        },
+        {
+            "opd": "Retina",
+            "day_week": "",
+            "clinic": "จอประสาทตา",
+            "diagnosis": "IOL Subluxation"
+        },
+        {
+            "opd": "Retina",
+            "day_week": "",
+            "clinic": "จอประสาทตา",
+            "diagnosis": "IOFB"
+        },
+        {
+            "opd": "Retina",
+            "day_week": "",
+            "clinic": "จอประสาทตา",
+            "diagnosis": "Endophthalmitis"
+        },
+        {
+            "opd": "Retina",
+            "day_week": "",
+            "clinic": "จอประสาทตา",
+            "diagnosis": "DR:Diabetic Retinopathy"
+        },
+        {
+            "opd": "Retina",
+            "day_week": "",
+            "clinic": "จอประสาทตา",
+            "diagnosis": "DME : Diabetic Macular Edema"
+        },
+        {
+            "opd": "Retina",
+            "day_week": "",
+            "clinic": "จอประสาทตา",
+            "diagnosis": "PDR : Proliferative Diabetic Retinopathy"
+        },
+        {
+            "opd": "Retina",
+            "day_week": "",
+            "clinic": "จอประสาทตา",
+            "diagnosis": "MH : Macular Hole"
+        },
+        {
+            "opd": "Retina",
+            "day_week": "",
+            "clinic": "จอประสาทตา",
+            "diagnosis": "RD:Retinal Detachment"
+        },
+        {
+            "opd": "Retina",
+            "day_week": "",
+            "clinic": "จอประสาทตา",
+            "diagnosis": "RRD: : Rhegmatogenous Retinal Detachment"
+        },
+        {
+            "opd": "Retina",
+            "day_week": "",
+            "clinic": "จอประสาทตา",
+            "diagnosis": "ERM : Epiretinal Membrane"
+        },
+        {
+            "opd": "9",
+            "day_week": "Monday",
+            "clinic": "",
+            "diagnosis": "ไฝ\/ติ่งเนื้อ\/หูด ประสงค์รักษาด้วยยา"
+        },
+        {
+            "opd": "9",
+            "day_week": "Tuesday",
+            "clinic": "",
+            "diagnosis": "ไฝ\/ติ่งเนื้อ\/หูด ประสงค์รักษาด้วยยา"
+        },
+        {
+            "opd": "9",
+            "day_week": "Wednesday",
+            "clinic": "",
+            "diagnosis": "ไฝ\/ติ่งเนื้อ\/หูด ประสงค์รักษาด้วยยา"
+        },
+        {
+            "opd": "9",
+            "day_week": "Thursday",
+            "clinic": "",
+            "diagnosis": "ไฝ\/ติ่งเนื้อ\/หูด ประสงค์รักษาด้วยยา"
+        },
+        {
+            "opd": "9",
+            "day_week": "Friday",
+            "clinic": "",
+            "diagnosis": "ไฝ\/ติ่งเนื้อ\/หูด ประสงค์รักษาด้วยยา"
+        },
+        {
+            "opd": "9",
+            "day_week": "Tuesday",
+            "clinic": "",
+            "diagnosis": "Adrenal mass Adrenal Vein Sampling (AVS)"
+        },
+        {
+            "opd": "9",
+            "day_week": "Thursday",
+            "clinic": "",
+            "diagnosis": "Adrenal mass Adrenal Vein Sampling (AVS)"
+        },
+        {
+            "opd": "9",
+            "day_week": "Tuesday",
+            "clinic": "",
+            "diagnosis": "Adrenal mass Biopsy"
+        },
+        {
+            "opd": "9",
+            "day_week": "Thursday",
+            "clinic": "",
+            "diagnosis": "Adrenal mass Biopsy"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Neuro.Med",
+            "diagnosis": "Refer Neuro med มหาราชฯ ครั้งแรก"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Neuro.Med",
+            "diagnosis": "ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับ"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Neuro.Med",
+            "diagnosis": "อายุรกรรมทางระบบประสาท เช่น Stroke Dementia"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Neuro.Med",
+            "diagnosis": "Parkinson Migraine เป็นต้น"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Neuro.Med",
+            "diagnosis": "ผู้ป่วยใหม่สงสัยโรคอายุรกรรมทางระบบประสาท"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Neuro.Med",
+            "diagnosis": "ผู้ป่วยเดิม OPD21(Neuro) ผิดนัดเกิน 1 ปี"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Hemato",
+            "diagnosis": "Refer Hemato มหาราชฯ"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Hemato",
+            "diagnosis": "Lab CBC ผิดปกติประสงค์พบแพทย์"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Hemato",
+            "diagnosis": "ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับอายุรกรรมโรคเลือด"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Hemato",
+            "diagnosis": "ผู้ป่วยเดิม OPD23(Hemato) ผิดนัดมีอาการ \/ ยาหมด"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Cardio",
+            "diagnosis": "Refer Cardio มหาราชฯ"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Cardio",
+            "diagnosis": "ผล EKG Abnormal"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Cardio",
+            "diagnosis": "ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับอายุรกรรมโรคหัวใจ แต่ไม่มีประวัติการักษา \/บันทึกข้อความ \/ หนังสือส่งตัว"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Cardio",
+            "diagnosis": "ผู้ป่วยเดิม OPD22(Cardio) ผิดนัดมีอาการ \/ ยาหมด"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Endocine",
+            "diagnosis": "ผู้ป่วยใหม่ประสงค์ย้ายมารักษาต่อมีเอกสาร refer บันทึกข้อความ \/ ประวัติการรักษาที่ ไม่ได้ระบุ I131"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Endocine",
+            "diagnosis": "โรคอ้วน"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Endocine",
+            "diagnosis": "ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับ อายุรกรรมต่อมไร้ท่อหรือไทรอยด์ แต่ไม่มีประวัติการรักษา \/ บันทึกข้อความ \/ หนังสือส่งตัว"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Onco",
+            "diagnosis": "Refer Oncologist"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Onco",
+            "diagnosis": "Multiple metastasis"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Onco",
+            "diagnosis": "CMT"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Onco",
+            "diagnosis": "Systemic therapy"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Onco",
+            "diagnosis": "Target therapy"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Onco",
+            "diagnosis": "New Case CA refer consult for palliative"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Onco",
+            "diagnosis": "New Case CA refer consult for pain clinic"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Nephro",
+            "diagnosis": "Refer Nephro มหาราชฯ"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Nephro",
+            "diagnosis": "ค่าไตผิดปกติประสงค์พบแพทย์"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Nephro",
+            "diagnosis": "ปัสสาวะมีลักษณะผิดปกติ เช่น ปัสสาวะเป็นฟอง ปัสสาวะบ่อย ปัสสาวะสีเข้ม แต่ไม่มี อาการปวดหน่วงท้องน้อย \/ ปัสสาวะแสบขัดร่วม"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Nephro",
+            "diagnosis": "ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับอายุรกรรมโรคไต"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Nephro",
+            "diagnosis": "ผู้ป่วยเดิม OPD26(Nephro) ผิดนัดนัดมีอาการ \/ ยาหมด"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "GI",
+            "diagnosis": "Refer GI med มหาราชฯ"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "GI",
+            "diagnosis": "Stool occult blood positive ประสงค์พบแพทย์"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "GI",
+            "diagnosis": "ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับอายุรกรรมโรคทางเดินอาหาร"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "GI",
+            "diagnosis": "ผู้ป่วยเดิม OPD23(GI) ผิดนัดมีอาการ \/ ยาหมด"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Rheumato",
+            "diagnosis": "Refer Rheumatologist มหาราชฯ"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Rheumato",
+            "diagnosis": "มีอาการปวดข้อต่างๆตามร่างกายหลายข้อร่วมกัน"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Rheumato",
+            "diagnosis": "ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับอายุรกรรมโรคข้อและรูมาติสซั่ม"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Rheumato",
+            "diagnosis": "ผู้ป่วยเดิม OPD22(Rheumato) ผิดนัดมีอาการ \/ ยาหมด"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Chest",
+            "diagnosis": "Refer Chest med มหาราชฯ"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Chest",
+            "diagnosis": "ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับอายุรกรรมโรคปอด"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Chest",
+            "diagnosis": "ผู้ป่วยเดิม OPD22(Chest) ผิดนัดมีอาการ \/ ยาหมด"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Spine",
+            "diagnosis": "Refer Ortho Spine มหาราชฯ"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Spine",
+            "diagnosis": "กระดูกหลังคด"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Spine",
+            "diagnosis": "กระดูกทับเส้นประสาท"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Spine",
+            "diagnosis": "ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับโรคกระดูก ข้อ เอ็น และกล้ามเนื้อ"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Spine",
+            "diagnosis": "ผู้ป่วยเดิม OPD10 ผิดนัดมีอาการ \/ ยาหมด"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Hand",
+            "diagnosis": "Refer Ortho HAND มหาราชฯ"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Hand",
+            "diagnosis": "Lesion บริเวณมือและข้อมือ เช่น ก้อน \/ แผล เป็นต้น"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Hand",
+            "diagnosis": "ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับโรคกระดูก ข้อ เอ็น และกล้ามเนื้อ"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Hand",
+            "diagnosis": "ผู้ป่วยเดิม OPD10 ผิดนัดมีอาการ \/ ยาหมด"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Adult",
+            "diagnosis": "Refer Ortho มหาราชฯ"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Adult",
+            "diagnosis": "ปวดเข่า เข่าเสื่อม"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Adult",
+            "diagnosis": "กระดูกพรุน"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Adult",
+            "diagnosis": "ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับโรคกระดูก ข้อ เอ็น และกล้ามเนื้อ"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Adult",
+            "diagnosis": "ผู้ป่วยเดิม OPD10 ผิดนัดมีอาการ \/ ยาหมด"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Trauma",
+            "diagnosis": "Refer Ortho Trauma มหาราชฯ"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Trauma",
+            "diagnosis": "กระดูกหักจากการประสบอุบัติเหตุ"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Trauma",
+            "diagnosis": "ACL injury"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Trauma",
+            "diagnosis": "ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับโรคกระดูก ข้อ เอ็น และกล้ามเนื้อ"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Trauma",
+            "diagnosis": "ผู้ป่วยเดิม OPD10 ผิดนัดมีอาการ \/ ยาหมด"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Ortho Tumor",
+            "diagnosis": "Refer Ortho Tumor มหาราชฯ"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Ortho Tumor",
+            "diagnosis": "มะเร็งที่มีการแพร่กระจายไปยังกระดูก"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Ortho Tumor",
+            "diagnosis": "ก้อนบริเวณกระดูก"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Ortho Tumor",
+            "diagnosis": "ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับโรคกระดูก ข้อ เอ็น และกล้ามเนื้อ"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Ortho Tumor",
+            "diagnosis": "ผู้ป่วยเดิม OPD10 ผิดนัดมีอาการ \/ ยาหมด"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Foot",
+            "diagnosis": "Refer Ortho มหาราชฯ"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Foot",
+            "diagnosis": "รองช้ำ"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Foot",
+            "diagnosis": "เท้าแบน"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Foot",
+            "diagnosis": "ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับโรคกระดูก ข้อ เอ็น และกล้ามเนื้อ"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Foot",
+            "diagnosis": "ผู้ป่วยเดิม OPD10 ผิดนัดมีอาการ \/ ยาหมด"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Ankle",
+            "diagnosis": "Refer Ortho มหาราชฯ"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Ankle",
+            "diagnosis": "รองช้ำ"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Ankle",
+            "diagnosis": "เท้าแบน"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Ankle",
+            "diagnosis": "ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับโรคกระดูก ข้อ เอ็น และกล้ามเนื้อ"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Ankle",
+            "diagnosis": "ผู้ป่วยเดิม OPD10 ผิดนัดมีอาการ \/ ยาหมด"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Ankle",
+            "diagnosis": "เท้าปุก"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Ankle",
+            "diagnosis": "เท้าแบน"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Foot",
+            "diagnosis": "เท้าปุก"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Foot",
+            "diagnosis": "เท้าแบน"
+        },
+        {
+            "opd": "21",
+            "day_week": "Monday",
+            "clinic": "",
+            "diagnosis": "Adrenal mass Adrenal Vein Sampling (AVS)"
+        },
+        {
+            "opd": "21",
+            "day_week": "Wednesday",
+            "clinic": "",
+            "diagnosis": "Adrenal mass Adrenal Vein Sampling (AVS)"
+        },
+        {
+            "opd": "21",
+            "day_week": "Friday",
+            "clinic": "",
+            "diagnosis": "Adrenal mass Adrenal Vein Sampling (AVS)"
+        },
+        {
+            "opd": "21",
+            "day_week": "Monday",
+            "clinic": "",
+            "diagnosis": "Adrenal mass Biopsy"
+        },
+        {
+            "opd": "21",
+            "day_week": "Wednesday",
+            "clinic": "",
+            "diagnosis": "Adrenal mass Biopsy"
+        },
+        {
+            "opd": "21",
+            "day_week": "Friday",
+            "clinic": "",
+            "diagnosis": "Adrenal mass Biopsy"
+        },
+        {
+            "opd": "21",
+            "day_week": "Tuesday",
+            "clinic": "Skin.Med",
+            "diagnosis": "ปานแดง ต้องการ Laser"
+        },
+        {
+            "opd": "21",
+            "day_week": "Thursday",
+            "clinic": "Skin.Med",
+            "diagnosis": "ปานแดง ต้องการ Laser"
+        },
+        {
+            "opd": "25",
+            "day_week": "",
+            "clinic": "ทันตกรรม",
+            "diagnosis": "ขูดหินปูน"
+        },
+        {
+            "opd": "25",
+            "day_week": "",
+            "clinic": "ทันตกรรม",
+            "diagnosis": "อุนฟัน"
+        },
+        {
+            "opd": "25",
+            "day_week": "",
+            "clinic": "ทันตกรรม",
+            "diagnosis": "ถอนฟัน"
+        },
+        {
+            "opd": "26",
+            "day_week": "Friday",
+            "clinic": "Skin.Med",
+            "diagnosis": "ปานแดง ต้องการ Laser"
+        },
+        {
+            "opd": "26",
+            "day_week": "",
+            "clinic": "Skin",
+            "diagnosis": "Refer Skin med มหาราชฯ ครั้งแรก"
+        },
+        {
+            "opd": "26",
+            "day_week": "",
+            "clinic": "Skin",
+            "diagnosis": "ผู้ป่วยประสงค์ย้ายมารับการรักษาต่อเนื่องเกี่ยวกับอายุรกรรมโรคผิวหนัง"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Skin",
+            "diagnosis": "ผู้ป่วยเดิม OPD26(Skin) ผิดนัดเกิน 1 ปี"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Sx.HBP",
+            "diagnosis": "TACE"
+        },
+        {
+            "opd": "9",
+            "day_week": "",
+            "clinic": "Sx.HBP",
+            "diagnosis": "PTBD"
+        },
+        {
+            "opd": "101",
+            "day_week": "",
+            "clinic": "Sx.HBP",
+            "diagnosis": "RFA"
+        },
+        {
+            "opd": "101",
+            "day_week": "",
+            "clinic": "Sx.HBP",
+            "diagnosis": "MWA"
+        },
+        {
+            "opd": "101",
+            "day_week": "",
+            "clinic": "Sx.HBP",
+            "diagnosis": "ICGR15"
+        },
+        {
+            "opd": "101",
+            "day_week": "",
+            "clinic": "Sx.HBP",
+            "diagnosis": "HIPEC"
+        },
+        {
+            "opd": "101",
+            "day_week": "",
+            "clinic": "Sx.HBP",
+            "diagnosis": "Symptomatic gall stone"
+        },
+        {
+            "opd": "101",
+            "day_week": "",
+            "clinic": "Sx.HBP",
+            "diagnosis": "Acute pancreatitis without retain ampullary \/ common bile duct stone"
+        },
+        {
+            "opd": "101",
+            "day_week": "",
+            "clinic": "Sx.HBP",
+            "diagnosis": "Intrahepatic duct stone"
+        },
+        {
+            "opd": "101",
+            "day_week": "",
+            "clinic": "Sx.HBP",
+            "diagnosis": "Acute cholecystitis without common bile duct stone"
+        },
+        {
+            "opd": "101",
+            "day_week": "",
+            "clinic": "Sx.GI",
+            "diagnosis": "Hemorrhoid"
+        },
+        {
+            "opd": "101",
+            "day_week": "",
+            "clinic": "Sx.GI",
+            "diagnosis": "Appendicitis"
+        },
+        {
+            "opd": "101",
+            "day_week": "",
+            "clinic": "Sx.GI",
+            "diagnosis": "Bowel obstruction"
+        },
+        {
+            "opd": "101",
+            "day_week": "",
+            "clinic": "Sx.GI",
+            "diagnosis": "Fistula in ano"
+        },
+        {
+            "opd": "101",
+            "day_week": "",
+            "clinic": "Sx.GI",
+            "diagnosis": "GIST"
+        },
+        {
+            "opd": "101",
+            "day_week": "",
+            "clinic": "Sx.GI",
+            "diagnosis": "มะเร็งทางเดินอาหาร refer for Sx."
+        },
+        {
+            "opd": "101",
+            "day_week": "",
+            "clinic": "Sx.GI",
+            "diagnosis": "Inguinal Hernia"
+        },
+        {
+            "opd": "101",
+            "day_week": "",
+            "clinic": "Sx.GI",
+            "diagnosis": "Diaphragmatic Hernia"
+        },
+        {
+            "opd": "101",
+            "day_week": "",
+            "clinic": "Sx.HNB",
+            "diagnosis": "ก้อนต่างๆตามร่างกาย"
+        },
+        {
+            "opd": "101",
+            "day_week": "",
+            "clinic": "Sx.HNB",
+            "diagnosis": "ก้อนที่เต้านม"
+        },
+        {
+            "opd": "101",
+            "day_week": "",
+            "clinic": "Sx.HNB",
+            "diagnosis": "CA Breast"
+        },
+        {
+            "opd": "101",
+            "day_week": "",
+            "clinic": "Sx.HNB",
+            "diagnosis": "ยังไม่ได้ผ่าตัด ส่ง OPD101 ได้กรณี refer for Sx."
+        },
+        {
+            "opd": "101",
+            "day_week": "",
+            "clinic": "Sx.HNB",
+            "diagnosis": "ยังไม่ได้ผ่าตัด ส่ง OPD101 ได้กรณี refer for CMT"
+        },
+        {
+            "opd": "101",
+            "day_week": "",
+            "clinic": "Sx.VAS",
+            "diagnosis": "Refer for AVF"
+        },
+        {
+            "opd": "101",
+            "day_week": "",
+            "clinic": "Sx.VAS",
+            "diagnosis": "เส้นเลือดขอด ( CVI )"
+        },
+        {
+            "opd": "101",
+            "day_week": "Tuesday",
+            "clinic": "",
+            "diagnosis": "Adrenal mass Rerfer for Adrenalectomy"
+        },
+        {
+            "opd": "101",
+            "day_week": "Monday",
+            "clinic": "",
+            "diagnosis": "ก้อนต่างๆตามลำตัว และ ศีรษะ"
+        },
+        {
+            "opd": "101",
+            "day_week": "Tuesday",
+            "clinic": "",
+            "diagnosis": "ก้อนต่างๆตามลำตัว และ ศีรษะ"
+        },
+        {
+            "opd": "101",
+            "day_week": "Wednesday",
+            "clinic": "",
+            "diagnosis": "ก้อนต่างๆตามลำตัว และ ศีรษะ"
+        },
+        {
+            "opd": "101",
+            "day_week": "Thursday",
+            "clinic": "",
+            "diagnosis": "ก้อนต่างๆตามลำตัว และ ศีรษะ"
+        },
+        {
+            "opd": "101",
+            "day_week": "Monday",
+            "clinic": "",
+            "diagnosis": "ก้อนบริเวณขาหนีบ R\/O Hernia"
+        },
+        {
+            "opd": "101",
+            "day_week": "Tuesday",
+            "clinic": "",
+            "diagnosis": "ก้อนบริเวณขาหนีบ R\/O Hernia"
+        },
+        {
+            "opd": "101",
+            "day_week": "Wednesday",
+            "clinic": "",
+            "diagnosis": "ก้อนบริเวณขาหนีบ R\/O Hernia"
+        },
+        {
+            "opd": "101",
+            "day_week": "Thursday",
+            "clinic": "",
+            "diagnosis": "ก้อนบริเวณขาหนีบ R\/O Hernia"
+        },
+        {
+            "opd": "101",
+            "day_week": "Monday",
+            "clinic": "",
+            "diagnosis": "ก้อนบริเวณทวารหนัก"
+        },
+        {
+            "opd": "101",
+            "day_week": "Wednesday",
+            "clinic": "",
+            "diagnosis": "ก้อนบริเวณอวัยวะเพศชายหรือใกล้เคียงอวัยวะเพศชาย"
+        },
+        {
+            "opd": "101",
+            "day_week": "Thursday",
+            "clinic": "",
+            "diagnosis": "ก้อนบริเวณอวัยวะเพศชายหรือใกล้เคียงอวัยวะเพศชาย"
+        },
+        {
+            "opd": "101",
+            "day_week": "Monday",
+            "clinic": "",
+            "diagnosis": "ก้อนบริเวณอวัยวะเพศหญิงหรือใกล้เคียงอวัยวะเพศหญิง"
+        },
+        {
+            "opd": "101",
+            "day_week": "Wednesday",
+            "clinic": "",
+            "diagnosis": "ก้อนบริเวณอวัยวะเพศหญิงหรือใกล้เคียงอวัยวะเพศหญิง"
+        },
+        {
+            "opd": "101",
+            "day_week": "Friday",
+            "clinic": "",
+            "diagnosis": "ก้อนบริเวณอวัยวะเพศหญิงหรือใกล้เคียงอวัยวะเพศหญิง"
+        },
+        {
+            "opd": "101",
+            "day_week": "Monday",
+            "clinic": "",
+            "diagnosis": "ไฝ\/ติ่งเนื้อ ตามลำตัวประสงค์ต้ดออก"
+        },
+        {
+            "opd": "101",
+            "day_week": "Tuesday",
+            "clinic": "",
+            "diagnosis": "ไฝ\/ติ่งเนื้อ ตามลำตัวประสงค์ต้ดออก"
+        },
+        {
+            "opd": "101",
+            "day_week": "Wednesday",
+            "clinic": "",
+            "diagnosis": "ไฝ\/ติ่งเนื้อ ตามลำตัวประสงค์ต้ดออก"
+        },
+        {
+            "opd": "101",
+            "day_week": "Thursday",
+            "clinic": "",
+            "diagnosis": "ไฝ\/ติ่งเนื้อ ตามลำตัวประสงค์ต้ดออก"
+        },
+        {
+            "opd": "101",
+            "day_week": "",
+            "clinic": "Hand",
+            "diagnosis": "ก้อนบริเวณข้อต่อตามร่างกาย"
+        },
+        {
+            "opd": "101",
+            "day_week": "",
+            "clinic": "Hand",
+            "diagnosis": "ก้อนบริเวณเมือตัดที่ข้อมือ * สัปดาห์ที่สาย HAND เป็น Ortho *"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Ortho Tumor",
+            "diagnosis": "ก้อนบริเวณข้อต่อตามร่างกาย"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "Ortho Tumor",
+            "diagnosis": "ก้อนบริเวณเมือตัดที่ข้อมือ * สัปดาห์ที่สาย HAND เป็น Ortho *"
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "",
+            "diagnosis": ""
+        },
+        {
+            "opd": "10",
+            "day_week": "",
+            "clinic": "",
+            "diagnosis": ""
+        },
+        {
+            "opd": "EID",
+            "day_week": "",
+            "clinic": "EID Clinic",
+            "diagnosis": "ไข้ ร่วมกับไอ \/ เจ็บคอ \/ น้ำมูก \/ เสมหะ"
+        },
+        {
+            "opd": "EID",
+            "day_week": "",
+            "clinic": "EID Clinic",
+            "diagnosis": "ไข้ออกผื่น"
+        },
+        {
+            "opd": "EID",
+            "day_week": "",
+            "clinic": "EID Clinic",
+            "diagnosis": "อีสุกอีใส"
+        },
+        {
+            "opd": "EID",
+            "day_week": "",
+            "clinic": "EID Clinic",
+            "diagnosis": "งูสวัด ( ในระยะแพร่กระจายเชื้อ )"
+        },
+        {
+            "opd": "EID",
+            "day_week": "",
+            "clinic": "EID Clinic",
+            "diagnosis": "Covid-19"
+        },
+        {
+            "opd": "EID",
+            "day_week": "",
+            "clinic": "EID Clinic",
+            "diagnosis": "ไข้หวัดใหญ่"
+        },
+        {
+            "opd": "EID",
+            "day_week": "",
+            "clinic": "EID Clinic",
+            "diagnosis": "RSV"
+        },
+        {
+            "opd": "EID",
+            "day_week": "",
+            "clinic": "EID Clinic",
+            "diagnosis": "หิด"
+        },
+        {
+            "opd": "EID",
+            "day_week": "",
+            "clinic": "EID - TB Clinic",
+            "diagnosis": "ผู้ป่วยวัณโรคปอด"
+        },
+        {
+            "opd": "EID",
+            "day_week": "",
+            "clinic": "EID - TB Clinic",
+            "diagnosis": "ไอเรื้อรัง > 2 สัปดาห์"
+        },
+        {
+            "opd": "EID",
+            "day_week": "",
+            "clinic": "EID - TB Clinic",
+            "diagnosis": "เสมหะปนเลือด"
+        },
+        {
+            "opd": "EID",
+            "day_week": "",
+            "clinic": "EID - TB Clinic",
+            "diagnosis": "คัดกรองวัณโรคปอด"
+        },
+        {
+            "opd": "EID",
+            "day_week": "",
+            "clinic": "EID - TB Clinic",
+            "diagnosis": "FLOW R\/O TB"
+        },
+        {
+            "opd": "108",
+            "day_week": "",
+            "clinic": "ตรวจอายุรกรรมทั่วไป (108)",
+            "diagnosis": "สิทธิประกันสังคมมหาราชฯ"
+        },
+        {
+            "opd": "108",
+            "day_week": "",
+            "clinic": "ตรวจอายุรกรรมทั่วไป (108)",
+            "diagnosis": "เคสเดิม 108 คลินิก"
+        },
+        {
+            "opd": "108",
+            "day_week": "",
+            "clinic": "ตรวจอายุรกรรมทั่วไป (108)",
+            "diagnosis": "ตรวจสุขภาพเพื่อขอใบรับรองแพทย์ทั่วไป"
+        },
+        {
+            "opd": "108",
+            "day_week": "",
+            "clinic": "ตรวจอายุรกรรมทั่วไป (108)",
+            "diagnosis": "ต่อใบขับขี่"
+        },
+        {
+            "opd": "108",
+            "day_week": "",
+            "clinic": "ตรวจอายุรกรรมทั่วไป (108)",
+            "diagnosis": "สมัครเรียน \/ สมัครงาน (ภายในประเทศ)"
+        },
+        {
+            "opd": "108",
+            "day_week": "",
+            "clinic": "ตรวจอายุรกรรมทั่วไป (108)",
+            "diagnosis": "อุปสมบท"
+        },
+        {
+            "opd": "108",
+            "day_week": "",
+            "clinic": "ตรวจอายุรกรรมทั่วไป (108)",
+            "diagnosis": "ตรวจสุขภาพประจำปี"
+        },
+        {
+            "opd": "108",
+            "day_week": "",
+            "clinic": "ตรวจอายุรกรรมทั่วไป (108)",
+            "diagnosis": "ตรวจภูมิคุ้มกันวัคซีน"
+        },
+        {
+            "opd": "108",
+            "day_week": "",
+            "clinic": "ตรวจอายุรกรรมทั่วไป (108)",
+            "diagnosis": "คลินิกวัคซีนทางเลือกชนิดต่างๆ"
+        },
+        {
+            "opd": "ศูนย์สุขภาพ มช.",
+            "day_week": "",
+            "clinic": "ตรวจอายุรกรรมทั่วไป (ศูนย์สุขภาพ มช.)",
+            "diagnosis": "นักศึกษามช."
+        },
+        {
+            "opd": "ศูนย์สุขภาพ มช.",
+            "day_week": "",
+            "clinic": "ตรวจอายุรกรรมทั่วไป (ศูนย์สุขภาพ มช.)",
+            "diagnosis": "บุคลากรภายในมหาวิทยาลัยเชียงใหม่"
+        },
+        {
+            "opd": "ศูนย์สุขภาพ มช.",
+            "day_week": "",
+            "clinic": "ตรวจอายุรกรรมทั่วไป (ศูนย์สุขภาพ มช.)",
+            "diagnosis": "บริการทำแผล"
+        },
+        {
+            "opd": "ศูนย์สุขภาพ มช.",
+            "day_week": "",
+            "clinic": "ตรวจอายุรกรรมทั่วไป (ศูนย์สุขภาพ มช.)",
+            "diagnosis": "ตรวจภูมิคุ้มกันวัคซีน"
+        },
+        {
+            "opd": "ศูนย์สุขภาพ มช.",
+            "day_week": "",
+            "clinic": "ตรวจอายุรกรรมทั่วไป (ศูนย์สุขภาพ มช.)",
+            "diagnosis": "คลินิกวัคซีนทางเลือกชนิดต่างๆ"
+        },
+        {
+            "opd": "ศูนย์สุขภาพ มช.",
+            "day_week": "",
+            "clinic": "ตรวจอายุรกรรมทั่วไป (ศูนย์สุขภาพ มช.)",
+            "diagnosis": "ศูนย์สุขใจ (CMU Mental Health Center)"
+        },
+        {
+            "opd": "Pain",
+            "day_week": "",
+            "clinic": "Pain clinic",
+            "diagnosis": "Pain"
+        },
+        {
+            "opd": "Pain",
+            "day_week": "",
+            "clinic": "Pain clinic",
+            "diagnosis": "Chronic Pain"
+        },
+        {
+            "opd": "Pain",
+            "day_week": "",
+            "clinic": "Pain clinic",
+            "diagnosis": "ปวดเรื้อรัง"
+        },
+        {
+            "opd": "Pain",
+            "day_week": "",
+            "clinic": "Pain clinic",
+            "diagnosis": "คลินิกแก้ปวด"
+        },
+        {
+            "opd": "Pain",
+            "day_week": "",
+            "clinic": "Pain clinic",
+            "diagnosis": "Consult Pain"
         }
+    ],
+    "schedule": [
+        {
+            "opd": "1",
+            "day_week": "Monday",
+            "clinic": "ผ่าตัดกระเพาะ",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "36335 , 35735",
+            "remark": ""
+        },
+        {
+            "opd": "1",
+            "day_week": "Monday",
+            "clinic": "CVT",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "36335 , 35735",
+            "remark": ""
+        },
+        {
+            "opd": "1",
+            "day_week": "Monday",
+            "clinic": "Sx.Ped",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "36335 , 35735",
+            "remark": ""
+        },
+        {
+            "opd": "1",
+            "day_week": "Tuesday",
+            "clinic": "Sx.Plastic",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "36335 , 35735",
+            "remark": ""
+        },
+        {
+            "opd": "1",
+            "day_week": "Tuesday",
+            "clinic": "Sx.Plastic",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "36335 , 35735",
+            "remark": ""
+        },
+        {
+            "opd": "1",
+            "day_week": "Wednesday",
+            "clinic": "Sx.Ped",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "36335 , 35735",
+            "remark": ""
+        },
+        {
+            "opd": "1",
+            "day_week": "Wednesday",
+            "clinic": "ผ่าตัดกระเพาะ",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "36335 , 35735",
+            "remark": ""
+        },
+        {
+            "opd": "1",
+            "day_week": "Thursday",
+            "clinic": "Sx.plastic",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "36335 , 35735",
+            "remark": ""
+        },
+        {
+            "opd": "1",
+            "day_week": "Thursday",
+            "clinic": "Sx.plastic",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "36335 , 35735",
+            "remark": ""
+        },
+        {
+            "opd": "1",
+            "day_week": "Friday",
+            "clinic": "CVT",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "36335 , 35735",
+            "remark": ""
+        },
+        {
+            "opd": "2",
+            "day_week": "Monday",
+            "clinic": "Uro.Ped",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35736 , 35739",
+            "remark": ""
+        },
+        {
+            "opd": "2",
+            "day_week": "Monday",
+            "clinic": "Neuro.Sx",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35736 , 35739",
+            "remark": ""
+        },
+        {
+            "opd": "2",
+            "day_week": "Tuesday",
+            "clinic": "Neuro.Sx",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35736 , 35739",
+            "remark": ""
+        },
+        {
+            "opd": "2",
+            "day_week": "Wednesday",
+            "clinic": "Uro.Sx.",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35736 , 35739",
+            "remark": ""
+        },
+        {
+            "opd": "2",
+            "day_week": "Wednesday",
+            "clinic": "Uro.Ped",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35736 , 35739",
+            "remark": ""
+        },
+        {
+            "opd": "2",
+            "day_week": "Thursday",
+            "clinic": "Uro.Sx.",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35736 , 35739",
+            "remark": ""
+        },
+        {
+            "opd": "2",
+            "day_week": "Friday",
+            "clinic": "Neuro.Sx",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35736 , 35739",
+            "remark": ""
+        },
+        {
+            "opd": "3",
+            "day_week": "Monday",
+            "clinic": "Gyne",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35741 , 36341",
+            "remark": ""
+        },
+        {
+            "opd": "3",
+            "day_week": "Tuesday",
+            "clinic": "Onco Gyne",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35741 , 36341",
+            "remark": ""
+        },
+        {
+            "opd": "3",
+            "day_week": "Wednesday",
+            "clinic": "Gyne",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35741 , 36341",
+            "remark": ""
+        },
+        {
+            "opd": "3",
+            "day_week": "Thursday",
+            "clinic": "Onco Gyne",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35741 , 36341",
+            "remark": ""
+        },
+        {
+            "opd": "3",
+            "day_week": "Friday",
+            "clinic": "Gyne",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35741 , 36341",
+            "remark": ""
+        },
+        {
+            "opd": "4",
+            "day_week": "Monday",
+            "clinic": "ANC",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35742 , 35720",
+            "remark": ""
+        },
+        {
+            "opd": "4",
+            "day_week": "Tuesday",
+            "clinic": "ANC",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35742 , 35720",
+            "remark": ""
+        },
+        {
+            "opd": "4",
+            "day_week": "Wednesday",
+            "clinic": "ANC",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35742 , 35720",
+            "remark": ""
+        },
+        {
+            "opd": "4",
+            "day_week": "Thursday",
+            "clinic": "ANC",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35742 , 35720",
+            "remark": ""
+        },
+        {
+            "opd": "4",
+            "day_week": "Friday",
+            "clinic": "ANC",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35742 , 35720",
+            "remark": ""
+        },
+        {
+            "opd": "5",
+            "day_week": "Monday",
+            "clinic": "ตรวจหลังคลอด",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35743",
+            "remark": ""
+        },
+        {
+            "opd": "5",
+            "day_week": "Monday",
+            "clinic": "คุมกำเนิด",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35744",
+            "remark": ""
+        },
+        {
+            "opd": "5",
+            "day_week": "Tuesday",
+            "clinic": "Uro Gyne",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35745",
+            "remark": ""
+        },
+        {
+            "opd": "5",
+            "day_week": "Tuesday",
+            "clinic": "วางแผนครอบครัว",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35746",
+            "remark": ""
+        },
+        {
+            "opd": "5",
+            "day_week": "Tuesday",
+            "clinic": "คุมกำเนิด",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35747",
+            "remark": ""
+        },
+        {
+            "opd": "5",
+            "day_week": "Wednesday",
+            "clinic": "วัยทอง",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35747",
+            "remark": ""
+        },
+        {
+            "opd": "5",
+            "day_week": "Wednesday",
+            "clinic": "คุมกำเนิด",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35747",
+            "remark": ""
+        },
+        {
+            "opd": "5",
+            "day_week": "Thursday",
+            "clinic": "Uro Gyne",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35745",
+            "remark": ""
+        },
+        {
+            "opd": "5",
+            "day_week": "Thursday",
+            "clinic": "CMU Pride",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35745",
+            "remark": ""
+        },
+        {
+            "opd": "5",
+            "day_week": "Thursday",
+            "clinic": "วางแผนครอบครัว",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35746",
+            "remark": ""
+        },
+        {
+            "opd": "5",
+            "day_week": "Thursday",
+            "clinic": "คุมกำเนิด",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35747",
+            "remark": ""
+        },
+        {
+            "opd": "5",
+            "day_week": "Friday",
+            "clinic": "วัยทอง",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35747",
+            "remark": ""
+        },
+        {
+            "opd": "5",
+            "day_week": "Friday",
+            "clinic": "คุมกำเนิด",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35747",
+            "remark": ""
+        },
+        {
+            "opd": "6",
+            "day_week": "Monday",
+            "clinic": "ภูมิแพ้",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35745 , 36692",
+            "remark": ""
+        },
+        {
+            "opd": "6",
+            "day_week": "Monday",
+            "clinic": "ภูมิแพ้",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35745 , 36692",
+            "remark": ""
+        },
+        {
+            "opd": "6",
+            "day_week": "Monday",
+            "clinic": "ENT Ped",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35745 , 36692",
+            "remark": ""
+        },
+        {
+            "opd": "6",
+            "day_week": "Monday",
+            "clinic": "นอนกรน OSA",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35745 , 36692",
+            "remark": ""
+        },
+        {
+            "opd": "6",
+            "day_week": "Monday",
+            "clinic": "นอนกรน OSA",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35745 , 36692",
+            "remark": ""
+        },
+        {
+            "opd": "6",
+            "day_week": "Tuesday",
+            "clinic": "ENT Tumor",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35745 , 36692",
+            "remark": ""
+        },
+        {
+            "opd": "6",
+            "day_week": "Wednesday",
+            "clinic": "Sinus",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35746 , 36692",
+            "remark": ""
+        },
+        {
+            "opd": "6",
+            "day_week": "Wednesday",
+            "clinic": "Sinus",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35745 , 36692",
+            "remark": ""
+        },
+        {
+            "opd": "6",
+            "day_week": "Thursday",
+            "clinic": "โสตประสาทหู",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35745 , 36692",
+            "remark": ""
+        },
+        {
+            "opd": "6",
+            "day_week": "Thursday",
+            "clinic": "เครื่องช่วยฟัง",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35745 , 36692",
+            "remark": ""
+        },
+        {
+            "opd": "6",
+            "day_week": "Thursday",
+            "clinic": "ABR",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35745 , 36692",
+            "remark": ""
+        },
+        {
+            "opd": "6",
+            "day_week": "Thursday",
+            "clinic": "โสตประสาทหู",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35745 , 36692",
+            "remark": ""
+        },
+        {
+            "opd": "6",
+            "day_week": "Thursday",
+            "clinic": "เครื่องช่วยฟัง",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35745 , 36692",
+            "remark": ""
+        },
+        {
+            "opd": "6",
+            "day_week": "Thursday",
+            "clinic": "ABR",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35745 , 36692",
+            "remark": ""
+        },
+        {
+            "opd": "6",
+            "day_week": "Friday",
+            "clinic": "นอนกรน OSA",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35745 , 36692",
+            "remark": ""
+        },
+        {
+            "opd": "6",
+            "day_week": "Friday",
+            "clinic": "นอนกรน OSA",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35745 , 36692",
+            "remark": ""
+        },
+        {
+            "opd": "6",
+            "day_week": "Friday",
+            "clinic": "เครื่องช่วยฟัง",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35745 , 36692",
+            "remark": ""
+        },
+        {
+            "opd": "6",
+            "day_week": "Friday",
+            "clinic": "ABR",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35745 , 36692",
+            "remark": ""
+        },
+        {
+            "opd": "6",
+            "day_week": "Friday",
+            "clinic": "เครื่องช่วยฟัง",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35745 , 36692",
+            "remark": ""
+        },
+        {
+            "opd": "6",
+            "day_week": "Friday",
+            "clinic": "ABR",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35745 , 36692",
+            "remark": ""
+        },
+        {
+            "opd": "7",
+            "day_week": "Monday",
+            "clinic": "ตาเข",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35748 , 36680",
+            "remark": ""
+        },
+        {
+            "opd": "7",
+            "day_week": "Monday",
+            "clinic": "ตาเด็ก",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35748 , 36680",
+            "remark": ""
+        },
+        {
+            "opd": "7",
+            "day_week": "Monday",
+            "clinic": "ต้อหิน",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35748 , 36680",
+            "remark": ""
+        },
+        {
+            "opd": "7",
+            "day_week": "Monday",
+            "clinic": "ตาเข",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35748 , 36680",
+            "remark": ""
+        },
+        {
+            "opd": "7",
+            "day_week": "Tuesday",
+            "clinic": "ตาเข",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35748 , 36680",
+            "remark": ""
+        },
+        {
+            "opd": "7",
+            "day_week": "Tuesday",
+            "clinic": "ต้อหิน",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35748 , 36680",
+            "remark": ""
+        },
+        {
+            "opd": "7",
+            "day_week": "Wednesday",
+            "clinic": "จอรับภาพ",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35748 , 36680",
+            "remark": ""
+        },
+        {
+            "opd": "7",
+            "day_week": "Wednesday",
+            "clinic": "ต้อหิน",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35748 , 36680",
+            "remark": ""
+        },
+        {
+            "opd": "7",
+            "day_week": "Wednesday",
+            "clinic": "ตาเด็ก",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35748 , 36680",
+            "remark": ""
+        },
+        {
+            "opd": "7",
+            "day_week": "Thursday",
+            "clinic": "Eye ID",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35748 , 36680",
+            "remark": ""
+        },
+        {
+            "opd": "7",
+            "day_week": "Friday",
+            "clinic": "ต้อหิน",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35748 , 36680",
+            "remark": ""
+        },
+        {
+            "opd": " Retina",
+            "day_week": "Monday",
+            "clinic": "จอประสาทตา",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35903 , 35910",
+            "remark": ""
+        },
+        {
+            "opd": " Retina",
+            "day_week": "Tuesday",
+            "clinic": "จอประสาทตา",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35903 , 35910",
+            "remark": ""
+        },
+        {
+            "opd": " Retina",
+            "day_week": "Wednesday",
+            "clinic": "จอประสาทตา",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35903 , 35910",
+            "remark": ""
+        },
+        {
+            "opd": " Retina",
+            "day_week": "Thursday",
+            "clinic": "จอประสาทตา",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35903 , 35910",
+            "remark": ""
+        },
+        {
+            "opd": " Retina",
+            "day_week": "Friday",
+            "clinic": "จอประสาทตา",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35903 , 35910",
+            "remark": ""
+        },
+        {
+            "opd": "9",
+            "day_week": "Monday",
+            "clinic": "Neuro.Med",
+            "time_slot": "8.00-12.00",
+            "age_group": "≥15",
+            "tel": "35740 , 35751",
+            "remark": ""
+        },
+        {
+            "opd": "9",
+            "day_week": "Monday",
+            "clinic": "ID",
+            "time_slot": "8.00-12.00",
+            "age_group": "≥15",
+            "tel": "35740 , 35751",
+            "remark": ""
+        },
+        {
+            "opd": "9",
+            "day_week": "Monday",
+            "clinic": "Skin",
+            "time_slot": "8.00-12.00",
+            "age_group": "≥15",
+            "tel": "35740 , 35751",
+            "remark": ""
+        },
+        {
+            "opd": "9",
+            "day_week": "Monday",
+            "clinic": "Hemato",
+            "time_slot": "8.00-12.00",
+            "age_group": "≥15",
+            "tel": "35740 , 35751",
+            "remark": ""
+        },
+        {
+            "opd": "9",
+            "day_week": "Monday",
+            "clinic": "Cardio",
+            "time_slot": "13.00-16.00",
+            "age_group": "≥15",
+            "tel": "35740 , 35751",
+            "remark": ""
+        },
+        {
+            "opd": "9",
+            "day_week": "Tuesday",
+            "clinic": "Cardio",
+            "time_slot": "8.00-16.00",
+            "age_group": "≥15",
+            "tel": "35740 , 35751",
+            "remark": ""
+        },
+        {
+            "opd": "9",
+            "day_week": "Tuesday",
+            "clinic": "Endocine",
+            "time_slot": "8.00-12.00",
+            "age_group": "≥15",
+            "tel": "35740 , 35751",
+            "remark": ""
+        },
+        {
+            "opd": "9",
+            "day_week": "Tuesday",
+            "clinic": "Onco",
+            "time_slot": "8.00-12.00",
+            "age_group": "≥15",
+            "tel": "35740 , 35751",
+            "remark": ""
+        },
+        {
+            "opd": "9",
+            "day_week": "Tuesday",
+            "clinic": "Nephro",
+            "time_slot": "13.00-16.00",
+            "age_group": "≥15",
+            "tel": "35740 , 35751",
+            "remark": ""
+        },
+        {
+            "opd": "9",
+            "day_week": "Wednesday",
+            "clinic": "GI",
+            "time_slot": "8.00-12.00",
+            "age_group": "≥15",
+            "tel": "35740 , 35751",
+            "remark": ""
+        },
+        {
+            "opd": "9",
+            "day_week": "Wednesday",
+            "clinic": "ID",
+            "time_slot": "8.00-12.00",
+            "age_group": "≥15",
+            "tel": "35740 , 35751",
+            "remark": ""
+        },
+        {
+            "opd": "9",
+            "day_week": "Wednesday",
+            "clinic": "Skin",
+            "time_slot": "8.00-12.00",
+            "age_group": "≥15",
+            "tel": "35740 , 35751",
+            "remark": ""
+        },
+        {
+            "opd": "9",
+            "day_week": "Wednesday",
+            "clinic": "Rheumato",
+            "time_slot": "8.00-12.00",
+            "age_group": "≥15",
+            "tel": "35740 , 35751",
+            "remark": ""
+        },
+        {
+            "opd": "9",
+            "day_week": "Wednesday",
+            "clinic": "Chest",
+            "time_slot": "13.00-16.00",
+            "age_group": "≥15",
+            "tel": "35740 , 35751",
+            "remark": ""
+        },
+        {
+            "opd": "9",
+            "day_week": "Wednesday",
+            "clinic": "Neuro.Med",
+            "time_slot": "13.00-16.00",
+            "age_group": "≥15",
+            "tel": "35740 , 35751",
+            "remark": ""
+        },
+        {
+            "opd": "9",
+            "day_week": "Thursday",
+            "clinic": "GI",
+            "time_slot": "8.00-12.00",
+            "age_group": "≥15",
+            "tel": "35740 , 35751",
+            "remark": ""
+        },
+        {
+            "opd": "9",
+            "day_week": "Thursday",
+            "clinic": "Endocine",
+            "time_slot": "8.00-12.00",
+            "age_group": "≥15",
+            "tel": "35740 , 35751",
+            "remark": ""
+        },
+        {
+            "opd": "9",
+            "day_week": "Thursday",
+            "clinic": "Nephro",
+            "time_slot": "13.00-16.00",
+            "age_group": "≥15",
+            "tel": "35740 , 35751",
+            "remark": ""
+        },
+        {
+            "opd": "9",
+            "day_week": "Friday",
+            "clinic": "Chest",
+            "time_slot": "8.00-12.00",
+            "age_group": "≥15",
+            "tel": "35740 , 35751",
+            "remark": ""
+        },
+        {
+            "opd": "9",
+            "day_week": "Friday",
+            "clinic": "Hemato",
+            "time_slot": "8.00-12.00",
+            "age_group": "≥15",
+            "tel": "35740 , 35751",
+            "remark": ""
+        },
+        {
+            "opd": "9",
+            "day_week": "Friday",
+            "clinic": "Rheumato",
+            "time_slot": "8.00-12.00",
+            "age_group": "≥15",
+            "tel": "35740 , 35751",
+            "remark": ""
+        },
+        {
+            "opd": "9",
+            "day_week": "Friday",
+            "clinic": "Cardio",
+            "time_slot": "13.00-16.00",
+            "age_group": "≥15",
+            "tel": "35740 , 35751",
+            "remark": ""
+        },
+        {
+            "opd": "9",
+            "day_week": "Friday",
+            "clinic": "Onco",
+            "time_slot": "13.00-16.00",
+            "age_group": "≥15",
+            "tel": "35740 , 35751",
+            "remark": ""
+        },
+        {
+            "opd": "10",
+            "day_week": "Monday",
+            "clinic": "Ortho Ped",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35750 , 35760",
+            "remark": ""
+        },
+        {
+            "opd": "10",
+            "day_week": "Monday",
+            "clinic": "Ortho General",
+            "time_slot": "13.00-16.00",
+            "age_group": "≥15",
+            "tel": "35750 , 35760",
+            "remark": ""
+        },
+        {
+            "opd": "10",
+            "day_week": "Tuesday",
+            "clinic": "Spine",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35750 , 35760",
+            "remark": ""
+        },
+        {
+            "opd": "10",
+            "day_week": "Tuesday",
+            "clinic": "Hand",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35750 , 35760",
+            "remark": ""
+        },
+        {
+            "opd": "10",
+            "day_week": "Tuesday",
+            "clinic": "Adult",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35750 , 35760",
+            "remark": ""
+        },
+        {
+            "opd": "10",
+            "day_week": "Wednesday",
+            "clinic": "Trauma",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35750 , 35760",
+            "remark": ""
+        },
+        {
+            "opd": "10",
+            "day_week": "Wednesday",
+            "clinic": "Ortho Tumor",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35750 , 35760",
+            "remark": ""
+        },
+        {
+            "opd": "10",
+            "day_week": "Wednesday",
+            "clinic": "Adult",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35750 , 35760",
+            "remark": ""
+        },
+        {
+            "opd": "10",
+            "day_week": "Thursday",
+            "clinic": "Foot",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35750 , 35760",
+            "remark": ""
+        },
+        {
+            "opd": "10",
+            "day_week": "Thursday",
+            "clinic": "Ankle",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35750 , 35760",
+            "remark": ""
+        },
+        {
+            "opd": "10",
+            "day_week": "Thursday",
+            "clinic": "Trauma",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35750 , 35760",
+            "remark": ""
+        },
+        {
+            "opd": "10",
+            "day_week": "Thursday",
+            "clinic": "Foot",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35750 , 35760",
+            "remark": ""
+        },
+        {
+            "opd": "10",
+            "day_week": "Thursday",
+            "clinic": "Ankle",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35750 , 35760",
+            "remark": ""
+        },
+        {
+            "opd": "10",
+            "day_week": "Friday",
+            "clinic": "Spine",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35750 , 35760",
+            "remark": ""
+        },
+        {
+            "opd": "10",
+            "day_week": "Friday",
+            "clinic": "Adult",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35750 , 35760",
+            "remark": ""
+        },
+        {
+            "opd": "20",
+            "day_week": "Monday",
+            "clinic": "กายภาพฟื้นฟู",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "34436 , 34415 , 36366",
+            "remark": ""
+        },
+        {
+            "opd": "20",
+            "day_week": "Tuesday",
+            "clinic": "กายภาพฟื้นฟู",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "34436 , 34415 , 36366",
+            "remark": ""
+        },
+        {
+            "opd": "20",
+            "day_week": "Wednesday",
+            "clinic": "กายภาพฟื้นฟู",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "34436 , 34415 , 36366",
+            "remark": ""
+        },
+        {
+            "opd": "20",
+            "day_week": "Thursday",
+            "clinic": "กายภาพฟื้นฟู",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "34436 , 34415 , 36366",
+            "remark": ""
+        },
+        {
+            "opd": "20",
+            "day_week": "Friday",
+            "clinic": "กายภาพฟื้นฟู",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "34436 , 34415 , 36366",
+            "remark": ""
+        },
+        {
+            "opd": "21",
+            "day_week": "Monday",
+            "clinic": "DM",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35752 , 36752",
+            "remark": ""
+        },
+        {
+            "opd": "21",
+            "day_week": "Monday",
+            "clinic": "Endocine.Med",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35752 , 36752",
+            "remark": ""
+        },
+        {
+            "opd": "21",
+            "day_week": "Tuesday",
+            "clinic": "Neuro.Med",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35752 , 36752",
+            "remark": ""
+        },
+        {
+            "opd": "21",
+            "day_week": "Wednesday",
+            "clinic": "Thyroid",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35752 , 36752",
+            "remark": ""
+        },
+        {
+            "opd": "21",
+            "day_week": "Wednesday",
+            "clinic": "Endocine.Med",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35752 , 36752",
+            "remark": ""
+        },
+        {
+            "opd": "21",
+            "day_week": "Thursday",
+            "clinic": "Neuro.Med",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35752 , 36752",
+            "remark": ""
+        },
+        {
+            "opd": "21",
+            "day_week": "Friday",
+            "clinic": "Thyroid",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35752 , 36752",
+            "remark": ""
+        },
+        {
+            "opd": "21",
+            "day_week": "Friday",
+            "clinic": "Endocine.Med",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35752 , 36752",
+            "remark": ""
+        },
+        {
+            "opd": "22",
+            "day_week": "Monday",
+            "clinic": "Chest.Med",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35753 , 36353",
+            "remark": ""
+        },
+        {
+            "opd": "22",
+            "day_week": "Tuesday",
+            "clinic": "Rheumato.Med",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35753 , 36353",
+            "remark": ""
+        },
+        {
+            "opd": "22",
+            "day_week": "Wednesday",
+            "clinic": "Cardio.Med",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35753 , 36353",
+            "remark": ""
+        },
+        {
+            "opd": "22",
+            "day_week": "Thursday",
+            "clinic": "ID.Med",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35753 , 36353",
+            "remark": ""
+        },
+        {
+            "opd": "22",
+            "day_week": "Friday",
+            "clinic": "ID.Med",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35753 , 36353",
+            "remark": ""
+        },
+        {
+            "opd": "23",
+            "day_week": "Monday",
+            "clinic": "GI.Med",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35754 , 36354",
+            "remark": ""
+        },
+        {
+            "opd": "23",
+            "day_week": "Tuesday",
+            "clinic": "Hemato.Med",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35754 , 36354",
+            "remark": ""
+        },
+        {
+            "opd": "23",
+            "day_week": "Wednesday",
+            "clinic": "ไม่มีคลินิก",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35754 , 36354",
+            "remark": ""
+        },
+        {
+            "opd": "23",
+            "day_week": "Thursday",
+            "clinic": "Hemato.Med",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35754 , 36354",
+            "remark": ""
+        },
+        {
+            "opd": "23",
+            "day_week": "Friday",
+            "clinic": "Botox",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35754 , 36354",
+            "remark": ""
+        },
+        {
+            "opd": "24",
+            "day_week": "Monday",
+            "clinic": "จิตเวช",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35755 , 36755",
+            "remark": ""
+        },
+        {
+            "opd": "24",
+            "day_week": "Tuesday",
+            "clinic": "จิตเวช",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35755 , 36755",
+            "remark": ""
+        },
+        {
+            "opd": "24",
+            "day_week": "Wednesday",
+            "clinic": "จิตเวช",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35755 , 36755",
+            "remark": ""
+        },
+        {
+            "opd": "24",
+            "day_week": "Wednesday",
+            "clinic": "เลิกบุหรี่สุรา",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35755 , 36755",
+            "remark": ""
+        },
+        {
+            "opd": "24",
+            "day_week": "Thursday",
+            "clinic": "จิตเวช",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35755 , 36755",
+            "remark": ""
+        },
+        {
+            "opd": "24",
+            "day_week": "Friday",
+            "clinic": "จิตเวช",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35755 , 36755",
+            "remark": ""
+        },
+        {
+            "opd": "24",
+            "day_week": "Monday",
+            "clinic": "จิตเวช",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35755 , 36755",
+            "remark": ""
+        },
+        {
+            "opd": "24",
+            "day_week": "Tuesday",
+            "clinic": "จิตเวช",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35755 , 36755",
+            "remark": ""
+        },
+        {
+            "opd": "24",
+            "day_week": "Wednesday",
+            "clinic": "จิตเวช",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35755 , 36755",
+            "remark": ""
+        },
+        {
+            "opd": "24",
+            "day_week": "Thursday",
+            "clinic": "จิตเวช",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35755 , 36755",
+            "remark": ""
+        },
+        {
+            "opd": "24",
+            "day_week": "Friday",
+            "clinic": "จิตเวช",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35755 , 36755",
+            "remark": ""
+        },
+        {
+            "opd": "25",
+            "day_week": "Monday",
+            "clinic": "ทันตกรรม",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35699 , 36399",
+            "remark": ""
+        },
+        {
+            "opd": "25",
+            "day_week": "Tuesday",
+            "clinic": "ทันตกรรม",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35699 , 36399",
+            "remark": ""
+        },
+        {
+            "opd": "25",
+            "day_week": "Wednesday",
+            "clinic": "ทันตกรรม",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35699 , 36399",
+            "remark": ""
+        },
+        {
+            "opd": "25",
+            "day_week": "Thursday",
+            "clinic": "ทันตกรรม",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35699 , 36399",
+            "remark": ""
+        },
+        {
+            "opd": "25",
+            "day_week": "Friday",
+            "clinic": "ทันตกรรม",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35699 , 36399",
+            "remark": ""
+        },
+        {
+            "opd": "26",
+            "day_week": "Monday",
+            "clinic": "Onco",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35756 , 36766",
+            "remark": ""
+        },
+        {
+            "opd": "26",
+            "day_week": "Monday",
+            "clinic": "เปลี่ยนไต",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35756 , 36766",
+            "remark": ""
+        },
+        {
+            "opd": "26",
+            "day_week": "Tuesday",
+            "clinic": "Skin.Med",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35756 , 36766",
+            "remark": ""
+        },
+        {
+            "opd": "26",
+            "day_week": "Wednesday",
+            "clinic": "Nephro",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35756 , 36766",
+            "remark": ""
+        },
+        {
+            "opd": "26",
+            "day_week": "Thursday",
+            "clinic": "Skin.Med",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35756 , 36766",
+            "remark": ""
+        },
+        {
+            "opd": "26",
+            "day_week": "Friday",
+            "clinic": "Skin.Med",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35756 , 36766",
+            "remark": ""
+        },
+        {
+            "opd": "26",
+            "day_week": "Friday",
+            "clinic": "ไตวาย",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35756 , 36766",
+            "remark": ""
+        },
+        {
+            "opd": "27",
+            "day_week": "Monday",
+            "clinic": "ID",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35757",
+            "remark": ""
+        },
+        {
+            "opd": "27",
+            "day_week": "Monday",
+            "clinic": "จิตเวช",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35758",
+            "remark": ""
+        },
+        {
+            "opd": "27",
+            "day_week": "Tuesday",
+            "clinic": "GI",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35759",
+            "remark": ""
+        },
+        {
+            "opd": "27",
+            "day_week": "Tuesday",
+            "clinic": "พัฒนาการ",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35760",
+            "remark": ""
+        },
+        {
+            "opd": "27",
+            "day_week": "Tuesday",
+            "clinic": "Vaccine",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35761",
+            "remark": ""
+        },
+        {
+            "opd": "27",
+            "day_week": "Wednesday",
+            "clinic": "Neuro",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35762",
+            "remark": ""
+        },
+        {
+            "opd": "27",
+            "day_week": "Thursday",
+            "clinic": "Skin",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35763",
+            "remark": ""
+        },
+        {
+            "opd": "27",
+            "day_week": "Thursday",
+            "clinic": "Chest",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35764",
+            "remark": ""
+        },
+        {
+            "opd": "27",
+            "day_week": "Thursday",
+            "clinic": "Rheumato",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35765",
+            "remark": ""
+        },
+        {
+            "opd": "27",
+            "day_week": "Thursday",
+            "clinic": "จิตเวช",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35766",
+            "remark": ""
+        },
+        {
+            "opd": "27",
+            "day_week": "Thursday",
+            "clinic": "พัฒนาการ",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35767",
+            "remark": ""
+        },
+        {
+            "opd": "27",
+            "day_week": "Thursday",
+            "clinic": "Vaccine",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35768",
+            "remark": ""
+        },
+        {
+            "opd": "27",
+            "day_week": "Friday",
+            "clinic": "Cardio",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35769",
+            "remark": ""
+        },
+        {
+            "opd": "28",
+            "day_week": "Monday",
+            "clinic": "เด็กป่วยทั่วไป",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35758 , 36358",
+            "remark": ""
+        },
+        {
+            "opd": "28",
+            "day_week": "Tuesday",
+            "clinic": "เด็กป่วยทั่วไป",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35758 , 36358",
+            "remark": ""
+        },
+        {
+            "opd": "28",
+            "day_week": "Wednesday",
+            "clinic": "เด็กป่วยทั่วไป",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35758 , 36358",
+            "remark": ""
+        },
+        {
+            "opd": "28",
+            "day_week": "Thursday",
+            "clinic": "เด็กป่วยทั่วไป",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35758 , 36358",
+            "remark": ""
+        },
+        {
+            "opd": "28",
+            "day_week": "Friday",
+            "clinic": "เด็กป่วยทั่วไป",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35758 , 36358",
+            "remark": ""
+        },
+        {
+            "opd": "29",
+            "day_week": "Monday",
+            "clinic": "ภูมิแพ้",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35759",
+            "remark": ""
+        },
+        {
+            "opd": "29",
+            "day_week": "Monday",
+            "clinic": "Endocine",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35760",
+            "remark": ""
+        },
+        {
+            "opd": "29",
+            "day_week": "Tuesday",
+            "clinic": "Hemato",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35761",
+            "remark": ""
+        },
+        {
+            "opd": "29",
+            "day_week": "Wednesday",
+            "clinic": "Endocine",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35762",
+            "remark": ""
+        },
+        {
+            "opd": "29",
+            "day_week": "Thursday",
+            "clinic": "Nephro",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35763",
+            "remark": ""
+        },
+        {
+            "opd": "29",
+            "day_week": "Friday",
+            "clinic": "Hemato",
+            "time_slot": "",
+            "age_group": "<15",
+            "tel": "35764",
+            "remark": ""
+        },
+        {
+            "opd": "101",
+            "day_week": "Monday",
+            "clinic": "Sx.GI",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35728 , 35729",
+            "remark": ""
+        },
+        {
+            "opd": "101",
+            "day_week": "Tuesday",
+            "clinic": "Sx.HBP",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35728 , 35729",
+            "remark": ""
+        },
+        {
+            "opd": "101",
+            "day_week": "Wednesday",
+            "clinic": "Sx.HNB",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35728 , 35729",
+            "remark": ""
+        },
+        {
+            "opd": "101",
+            "day_week": "Thursday",
+            "clinic": "Sx.VAS",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35728 , 35729",
+            "remark": ""
+        },
+        {
+            "opd": "101",
+            "day_week": "Friday",
+            "clinic": "ไม่มีคลินิก",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "35728 , 35729",
+            "remark": ""
+        },
+        {
+            "opd": "110",
+            "day_week": "Monday",
+            "clinic": "รังสีรักษา",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "34605 , 35726",
+            "remark": ""
+        },
+        {
+            "opd": "110",
+            "day_week": "Tuesday",
+            "clinic": "รังสีรักษา",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "34605 , 35726",
+            "remark": ""
+        },
+        {
+            "opd": "110",
+            "day_week": "Tuesday",
+            "clinic": "Intervention",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "34605 , 35726",
+            "remark": ""
+        },
+        {
+            "opd": "110",
+            "day_week": "Wednesday",
+            "clinic": "Onco",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "34605 , 35726",
+            "remark": ""
+        },
+        {
+            "opd": "110",
+            "day_week": "Thursday",
+            "clinic": "Onco",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "34605 , 35726",
+            "remark": ""
+        },
+        {
+            "opd": "110",
+            "day_week": "Friday",
+            "clinic": "Cardio",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "34605 , 35726",
+            "remark": ""
+        },
+        {
+            "opd": "Fammed",
+            "day_week": "Monday",
+            "clinic": "อายุรกรรมทั่วไป",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "36363",
+            "remark": ""
+        },
+        {
+            "opd": "Fammed",
+            "day_week": "Monday",
+            "clinic": "ตรวจร่างกายไปต่างประเทศ",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "36364",
+            "remark": ""
+        },
+        {
+            "opd": "Fammed",
+            "day_week": "Tuesday",
+            "clinic": "อายุรกรรมทั่วไป",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "36365",
+            "remark": ""
+        },
+        {
+            "opd": "Fammed",
+            "day_week": "Tuesday",
+            "clinic": "ตรวจร่างกายไปต่างประเทศ",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "36366",
+            "remark": ""
+        },
+        {
+            "opd": "Fammed",
+            "day_week": "Tuesday",
+            "clinic": "Palliative",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "36367",
+            "remark": ""
+        },
+        {
+            "opd": "Fammed",
+            "day_week": "Wednesday",
+            "clinic": "ไม่มีคลินิก",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "36368",
+            "remark": ""
+        },
+        {
+            "opd": "Fammed",
+            "day_week": "Thursday",
+            "clinic": "อายุรกรรมทั่วไป",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "36369",
+            "remark": ""
+        },
+        {
+            "opd": "Fammed",
+            "day_week": "Thursday",
+            "clinic": "ตรวจร่างกายไปต่างประเทศ",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "36370",
+            "remark": ""
+        },
+        {
+            "opd": "Fammed",
+            "day_week": "Friday",
+            "clinic": "อายุรกรรมทั่วไป",
+            "time_slot": "",
+            "age_group": "≥15",
+            "tel": "36371",
+            "remark": ""
+        },
+        {
+            "opd": "108",
+            "day_week": "Monday",
+            "clinic": "OPD 108",
+            "time_slot": "8.00 - 20.00",
+            "age_group": "≥15",
+            "tel": "35170, 36182",
+            "remark": ""
+        },
+        {
+            "opd": "108",
+            "day_week": "Tuesday",
+            "clinic": "OPD 108",
+            "time_slot": "8.00 - 20.00",
+            "age_group": "≥15",
+            "tel": "35170, 36182",
+            "remark": ""
+        },
+        {
+            "opd": "108",
+            "day_week": "Wednesday",
+            "clinic": "OPD 108",
+            "time_slot": "8.00 - 20.00",
+            "age_group": "≥15",
+            "tel": "35170, 36182",
+            "remark": ""
+        },
+        {
+            "opd": "108",
+            "day_week": "Thursday",
+            "clinic": "OPD 108",
+            "time_slot": "8.00 - 20.00",
+            "age_group": "≥15",
+            "tel": "35170, 36182",
+            "remark": ""
+        },
+        {
+            "opd": "108",
+            "day_week": "Friday",
+            "clinic": "OPD 108",
+            "time_slot": "8.00 - 20.00",
+            "age_group": "≥15",
+            "tel": "35170, 36182",
+            "remark": ""
+        },
+        {
+            "opd": "108",
+            "day_week": "Saturday",
+            "clinic": "OPD 108",
+            "time_slot": "8.00 - 16.00",
+            "age_group": "≥15",
+            "tel": "35170, 36182",
+            "remark": ""
+        },
+        {
+            "opd": "108",
+            "day_week": "Sunday",
+            "clinic": "OPD 108",
+            "time_slot": "8.00 - 16.00",
+            "age_group": "≥15",
+            "tel": "35170, 36182",
+            "remark": ""
+        },
+        {
+            "opd": "ศูนย์สุขภาพมช.",
+            "day_week": "Monday",
+            "clinic": "ศูนย์สุขภาพมช.",
+            "time_slot": "8.00 - 20.00",
+            "age_group": "≥15",
+            "tel": "43181",
+            "remark": ""
+        },
+        {
+            "opd": "ศูนย์สุขภาพมช.",
+            "day_week": "Tuesday",
+            "clinic": "ศูนย์สุขภาพมช.",
+            "time_slot": "8.00 - 20.00",
+            "age_group": "≥15",
+            "tel": "43181",
+            "remark": ""
+        },
+        {
+            "opd": "ศูนย์สุขภาพมช.",
+            "day_week": "Wednesday",
+            "clinic": "ศูนย์สุขภาพมช.",
+            "time_slot": "8.00 - 20.00",
+            "age_group": "≥15",
+            "tel": "43181",
+            "remark": ""
+        },
+        {
+            "opd": "ศูนย์สุขภาพมช.",
+            "day_week": "Thursday",
+            "clinic": "ศูนย์สุขภาพมช.",
+            "time_slot": "8.00 - 20.00",
+            "age_group": "≥15",
+            "tel": "43181",
+            "remark": ""
+        },
+        {
+            "opd": "ศูนย์สุขภาพมช.",
+            "day_week": "Friday",
+            "clinic": "ศูนย์สุขภาพมช.",
+            "time_slot": "8.00 - 20.00",
+            "age_group": "≥15",
+            "tel": "43181",
+            "remark": ""
+        },
+        {
+            "opd": "ศูนย์สุขภาพมช.",
+            "day_week": "Saturday",
+            "clinic": "ศูนย์สุขภาพมช.",
+            "time_slot": "8.00 - 16.00",
+            "age_group": "≥15",
+            "tel": "43181",
+            "remark": ""
+        },
+        {
+            "opd": "EID",
+            "day_week": "Monday",
+            "clinic": "EID",
+            "time_slot": "8.00 - 16.00",
+            "age_group": "",
+            "tel": "38589, 38591",
+            "remark": ""
+        },
+        {
+            "opd": "EID",
+            "day_week": "Monday",
+            "clinic": "EID - TB",
+            "time_slot": "8.00 - 16.00",
+            "age_group": "",
+            "tel": "38723",
+            "remark": ""
+        },
+        {
+            "opd": "EID",
+            "day_week": "Tuesday",
+            "clinic": "EID",
+            "time_slot": "8.00 - 16.00",
+            "age_group": "",
+            "tel": "38589, 38591",
+            "remark": ""
+        },
+        {
+            "opd": "EID",
+            "day_week": "Tuesday",
+            "clinic": "EID - TB",
+            "time_slot": "8.00 - 16.00",
+            "age_group": "",
+            "tel": "38723",
+            "remark": ""
+        },
+        {
+            "opd": "EID",
+            "day_week": "Wednesday",
+            "clinic": "EID",
+            "time_slot": "8.00 - 16.00",
+            "age_group": "",
+            "tel": "38589, 38591",
+            "remark": ""
+        },
+        {
+            "opd": "EID",
+            "day_week": "Wednesday",
+            "clinic": "EID - TB",
+            "time_slot": "8.00 - 16.00",
+            "age_group": "",
+            "tel": "38723",
+            "remark": ""
+        },
+        {
+            "opd": "EID",
+            "day_week": "Thursday",
+            "clinic": "EID",
+            "time_slot": "8.00 - 16.00",
+            "age_group": "",
+            "tel": "38589, 38591",
+            "remark": ""
+        },
+        {
+            "opd": "EID",
+            "day_week": "Thursday",
+            "clinic": "EID - TB",
+            "time_slot": "8.00 - 16.00",
+            "age_group": "",
+            "tel": "38723",
+            "remark": ""
+        },
+        {
+            "opd": "EID",
+            "day_week": "Friday",
+            "clinic": "EID",
+            "time_slot": "8.00 - 16.00",
+            "age_group": "",
+            "tel": "38589, 38591",
+            "remark": ""
+        },
+        {
+            "opd": "EID",
+            "day_week": "Friday",
+            "clinic": "EID - TB",
+            "time_slot": "8.00 - 16.00",
+            "age_group": "",
+            "tel": "38723",
+            "remark": ""
+        },
+        {
+            "opd": "EID",
+            "day_week": "Saturday",
+            "clinic": "EID",
+            "time_slot": "8.00 - 16.00",
+            "age_group": "",
+            "tel": "38589, 38591",
+            "remark": ""
+        },
+        {
+            "opd": "EID",
+            "day_week": "Saturday",
+            "clinic": "EID - TB",
+            "time_slot": "8.00 - 16.00",
+            "age_group": "",
+            "tel": "38723",
+            "remark": ""
+        }
+    ],
+    "warnings": {
+        "ผ่าตัดกระเพาะ": [
+            "หากผู้ป่วยแจ้งความประสงค์ปรึกษาเรื่อง\n\"ผ่าตัดกระเพาะ\"\nสามารถส่งพบแพทย์เพื่อประเมินได้\nไม่จำเป็นต้องผ่านห้องตรวจอายุรกรรมก่อน"
+        ],
+        "CVT": [
+            "บางโรงพยาบาล Chest sx. จะอยู่รวมกับ\nCVT ดังนั้นกรณี refer มาใหม่\nต้องพิจารณา Diagnosis ผู้ป่วยร่วม\nCardio Med\nOPD 9 : จันทร์ \/ อังคาร \/ ศุกร์\nOPD 22 : พุธ\nOPD 110 : ศุกร์"
+        ],
+        "Sx.Ped": [
+            "รับผู้ป่วยอายุ <15 ปี"
+        ],
+        "Sx.Plastic": [
+            "สาย HAND ตัดที่ \"ข้อมือ\"\nสลับกับ ortho ทุกสัปดาห์ \nก้อน \/ ติ่งเนื้อ \/ หูด \/ ไฝ บริเวณใบหน้าทั้งหมดตัดกับ OPD101 ที่\n\"แนวผม\"\nปวดกราม \/ ขากรรไกร : สามารถ Advice พบคณะทันตแพทย์ได้"
+        ],
+        "Uro.Ped": [
+            "บางกลุ่มอาการสามารถส่งพบ\nPed Sx. OPD 1 วันจันทร์\/พุธ ได้\nโทร Consult เป็นรายกรณี *\nOPD 1:35735\/36335"
+        ],
+        "Neuro.Sx": [
+            "Embolization\nบางตำแหน่งต้องส่ง OPD101\nขึ้นอยู่กับ Diagnosis ของผู้ป่วย"
+        ],
+        "Uro.Sx.": [
+            "ปัสสาวะมีสีผิดปกติ \/ ปัสสาวะเป็นฟอง \/โปรตีนรั่วในปัสสาวะ\nแต่ ไม่มี ปัสสาวะแสบขัดร่วม : ต้องส่ง OPD9 ก่อน"
+        ],
+        "Gyne": [
+            "มะเร็งทางนรีเวช Refer for RT : สามารถส่งตรงห้องรังสีรักษาได้\nจันทร์\/อังคาร : OPD110 พุธ\/พฤหัสบดี\/ศุกร์ : RT Service\nกรณีผู้ป่วยประสงค์ ผ่าตัดส่องกล้อง : ส่ง OPD5\nไม่มีบริการตรวจยืนยันการตั้งครรภ์ด้วยการ U\/S : แนะนำติดต่อสถานพยาบาลเอกชน"
+        ],
+        "Onco Gyne": [
+            "มะเร็งทางนรีเวช Refer for RT : สามารถส่งตรงห้องรังสีรักษาได้\nจันทร์\/อังคาร : OPD110 พุธ\/พฤหัสบดี\/ศุกร์ : RT Service\nกรณีผู้ป่วยประสงค์ ผ่าตัดส่องกล้อง : ส่ง OPD5\nไม่มีบริการตรวจยืนยันการตั้งครรภ์ด้วยการ U\/S : แนะนำติดต่อสถานพยาบาลเอกชน"
+        ],
+        "ANC": [
+            "ฝากครรภ์ครั้งแรกและคัดกรอง Thalassemia : ต้องลงทะเบียนสามีด้วย\nFetal center และ CVS : ส่งห้องคลอด\nไม่รับยุติการตั้งครรภ์"
+        ],
+        "ตรวจหลังคลอด": [
+            "กรณีมาไม่ตรงนัดหรือคลอดที่ร.พ.อื่นแต่ประสงค์มาตรวจหลังคลอดที่มหาราชฯ\nลงทะเบียนส่งผู้ป่วยติดต่อ OPD5\nเพื่อพิจารณาเป็นรายกรณี"
+        ],
+        "Uro Gyne": [
+            "รับเฉพาะกรณีมีประวัติการรักษา\/บันทึกข้อความ ที่ระบุชัดเจนว่าเป็นอาการทาง Uro - Gyne คลำพบก้อนที่ช่องคลอดไม่มีเอกสารระบุชัดเจนว่ามดลูกหย่อน : ส่ง OPD3"
+        ],
+        "วางแผนครอบครัว": [
+            "มีบุตรยาก \/ ปล่อยแต่ไม่ติด \/ แท้งซ้ำ : ติดต่อ ศูนย์ความเป็นเลิศฯโทร 34714, 34715"
+        ],
+        "วัยทอง": [
+            "รับเฉพาะผู้ป่วยเดิมของคลินิกวัยทอง\nโรงพยาบาลมหาราชฯ\nประสงค์เข้าคลินิกวัยทอง 'ครั้งแรก'\nOPD5 วันศุกร์ เท่านั้น"
+        ],
+        "CMU Pride": [
+            "ลงทะเบียนส่งผู้ป่วยติดต่อ OPD5\nเพื่อพิจารณานัดหมายรายกรณี"
+        ],
+        "Sx.HBP": [
+            "Liver Biopsy\nยังไม่มีข้อสรุปแน่ชัดว่าเป็นของ Med \/ Sx.\n* โทร Consult เป็นรายกรณี *\nOPD 9: 35740 \/ 35751\nOPD 23: 35754 \/ 36354\nOPD 101: 35728 \/ 35729"
+        ],
+        "Endocine": [
+            "OPD 21\nส่งตรงได้เฉพาะกรณี\nใบ refer ระบุ Endocrine ชัดเจน",
+            "เปิดให้บริการ\n08.00 - 12.00 น.\nRefer for 1131\nสามารถส่ง OPD21 วันพุธ\/ศุกร์ ได้\nRefer\/บันทึกข้อความระบุพบ Endocrine\nสามารถส่ง OPD21 วันจันทร์\/พุธ\/ศุกร์ ได้"
+        ],
+        "คุมกำเนิด": [
+            "ลงทะเบียนส่งผู้ป่วยติดต่อ OPD5\nเพื่อพิจารณานัดหมายรายกรณี"
+        ],
+        "ภูมิแพ้": [
+            "ข้อควรระวัง\nSkin Test\nไม่มี test แพ้อาหาร\nต้องพบแพทย์เพื่อพิจารณานัดคิว\nกรณีไอเรื้อรัง > 2 สัปดาห์\/ ไอปนเลือด \/ เสมหะปนเลือด : Activate TB Flow\nURI (ไอ\/เจ็บคอ\/น้ำมูก\/เสมหะ) + ไข้ : ส่งต่อ OPD EID"
+        ],
+        "ENT Ped": [
+            "ข้อควรระวัง\nกรณีไอเรื้อรัง > 2 สัปดาห์\n\/ ไอปนเลือด \/ เสมหะปนเลือด : Activate TB Flow\nURI (ไอ\/เจ็บคอ\/น้ำมูก\/เสมหะ) + ไข้ : ส่งต่อ OPD EID\nกลุ่ม Stenosis ทั้งหมด : ส่งประเมินหน้าห้องฉุกเฉินก่อน\nVertigo : รับเฉพาะ Peripheral Vertigo\nถ้าเป็น Central Vertigo : ส่ง OPD9"
+        ],
+        "ENT Tumor": [
+            "กลุ่ม Stenosis ทั้งหมด : ส่งประเมินหน้าห้องฉุกเฉินก่อน"
+        ],
+        "Sinus": [
+            "ข้อควรระวัง\nกรณีไอเรื้อรัง > 2 สัปดาห์\n\/ ไอปนเลือด \/ เสมหะปนเลือด : Activate TB Flow\nURI (ไอ\/เจ็บคอ\/น้ำมูก\/เสมหะ) + ไข้ : ส่งต่อ OPD EID\nกลุ่ม Stenosis ทั้งหมด : ส่งประเมินหน้าห้องฉุกเฉินก่อน\nVertigo : รับเฉพาะ Peripheral Vertigo\nถ้าเป็น Central Vertigo : ส่ง OPD9"
+        ],
+        "โสตประสาทหู": [
+            "ข้อควรระวัง\nกรณีไอเรื้อรัง > 2 สัปดาห์\n\/ ไอปนเลือด \/ เสมหะปนเลือด : Activate TB Flow\nURI (ไอ\/เจ็บคอ\/น้ำมูก\/เสมหะ) + ไข้ : ส่งต่อ OPD EID\nกลุ่ม Stenosis ทั้งหมด : ส่งประเมินหน้าห้องฉุกเฉินก่อน\nVertigo : รับเฉพาะ Peripheral Vertigo\nถ้าเป็น Central Vertigo : ส่ง OPD10"
+        ],
+        "ต้อหิน": [
+            "เนื่องจากผู้รับบริการจำนวนมาก\nกรุณาลงทะเบียน\nส่งผู้ป่วยติดต่อ OPD7\nเพื่อพิจารณาตรวจหรือ + \/ - ใบนัด"
+        ],
+        "Eye ID": [
+            "รับเฉพาะ ผู้ป่วยโรคติดเชื้อ\nผู้ป่วยมา ตามนัด\nผู้ป่วยที่มี ภาวะฉุกเฉิน ทางตา\nผู้ป่วยที่ไม่ใช่ ID และถูก Refer มา\nสามารถส่งผู้ป่วยติดต่อ OPD7\nเพื่อพิจารณา\nความเร่งด่วนของอาการและ + \/ - ใบนัด\nผู้ป่วยเดิมที่ไม่ใช่ ID แต่มีอาการ\nส่งติดต่อ OPD 7 เพื่อพิจารณา\nความเร่งด่วนของอาการได้"
+        ],
+        "Neuro.Med": [
+            "เปิดให้บริการ\n8.00 - 12.00 น."
+        ],
+        "ID": [
+            "เปิดให้บริการ\n08.00 - 12.00 น.\nผู้ป่วย ID เดิมผิดนัด OPD 22\nกรณียาเดิมมีเพียงพอแนะนำพบ\nOPD 22 พฤหัสบดี\/ศุกร์ ไม่มีบริการยา PrEP       ",
+            "*กรณี New Case\n*มีเอกสาร refer \/ บันทึกข้อความระบุโรค \/ หัตถการชัดเจน : ส่ง OPD 22 ตรงได้\n*มียาเดิม \/ ผล Lab ระบุชัดเจน : ส่ง OPD 22 ตรงได้\n*Unsafe Sex : ส่ง OPD 22 ตรงได้\n*ไม่มี เอกสาร refer \/ ผล Lab \/ ยาเดิม : ส่ง OPD 9 ก่อนเท่านั้น"
+        ],
+        "Skin.Med": [
+            "เปิดให้บริการ\n08.00 - 12.00 น."
+        ],
+        "Hemato": [
+            "เปิดให้บริการ\n08.00 - 12.00 น.\nRefer for BMT\nสามารถส่ง OPD23 วันอังคาร\/พฤหัสบดี ได้"
+        ],
+        "Cardio": [
+            "เปิดให้บริการ\n8.00 - 16.00 น.\nRefer for Cardio\nสามารถส่ง OPD22 วันพุธ หรือ\nOPD110 วันศุกร์ ได้\nNew case\nRefer มาพบ CVT\nต้องส่งพบ Cardio med ก่อน",
+            "เปิดให้บริการ\n13.00 - 16.00 น.\nRefer for Cardio\nสามารถส่ง OPD22 วันพุธ หรือ\nOPD110 วันศุกร์ ได้\nNew case\nRefer มาพบ CVT\nต้องส่งพบ Cardio med ก่อน"
+        ],
+        "Onco": [
+            "Oncologist\nจันทร์ : OPD 26 มะเร็งทั่วไปวันจันทร์\nอังคาร:OPD9(08.00-12.00)\nพุธ - พฤหัสบดี : OPD 110\nศุกร์ : OPD 9 (13.00 - 16.00)"
+        ],
+        "Nephro": [
+            "เปิดให้บริการ\n13.00 - 16.00 น.\nRefer for Kidney Bx.\nสามารถส่ง OPD26 วันพุธ ได้"
+        ],
+        "Chest": [
+            "เปิดให้บริการ\n08.00 - 12.00 น.\nไอเรื้อรัง > 2 สัปดาห์ หรือ เสมหะปนเลือด\nต้องเข้าคัดกรองวัณโรคปอด\nFLOW R\/O TB\nRefer for EBUS\nสามารถส่ง OPD22 วันจันทร์ ได้"
+        ],
+        "Rheumato": [
+            "เปิดให้บริการ\n08.00 - 12.00 น."
+        ],
+        "GI": [
+            "เปิดให้บริการ\n08.00 - 12.00 น.\nRefer for ERCP \/ MRCP \/ EUS\nสามารถส่ง OPD23 วันจันทร์ได้\nบางหัตถการต้องส่ง\nOPD101 HBP วันอังคาร\nนิ่วในถุงน้ำดี \/ HCC \/\nLiver mass"
+        ],
+        "Spine": [
+            "บางกรณี C-Spine\nทาง Neuro Sx. รับเคส"
+        ],
+        "กายภายฟื้นฟู": [
+            "เปิดให้บริการ\n08.00 - 11.30 น.\nใบรับรองความพิการ\nด้านการได้ยิน : OPD 6\nด้านการมองเห็น : OPD 7"
+        ],
+        "DM": [
+            "*รับเฉพาะเคสเดิม*\n*กรณี New Case\nมีเอกสาร refer \/ บันทึกข้อความระบุพบ Endocrine\nชัดเจนสามารถส่งตรงได้\nRefer for AVS (Adrenal Vein Sampling)\nRefer Endocrine med มหาราชฯ"
+        ],
+        "Chest.Med": [
+            "*รับเฉพาะเคสเดิม\n*กรณี New Case\nมีเอกสาร refer \/ บันทึกข้อความระบุโรค \/ หัตถการ เช่น EBUS ชัดเจน : ส่ง OPD 22 ตรงได้"
+        ],
+        "Botox": [
+            "รับเฉพาะ Case Consult\nจากห้องตรวจของมหาราชฯ\nตรงนัดเท่านั้น"
+        ],
+        "ทันตกรรม": [
+            "เปิดให้บริการ\n8.00 - 10.00 น.\nทันตกรรมที่มีความซับซ้อน\nติดต่อคณะทันตแพทย์\nโทร 053- 944431"
+        ],
+        "เปลี่ยนไต": [
+            "*กรณี New Case\nมีเอกสาร refer \/ บันทึกข้อความระบุเพื่อเข้า\nโครงการเปลี่ยนไต (KT) ชัดเจน : ส่ง OPD 26 ตรงได้\nไม่มี เอกสาร refer:\/ บันทึกข้อความ แต่ประสงค์เข้าโครงการเปลี่ยนไต : แนะนำให้กลับไปพบแพทย์ประจำตัวเรื่องโรคไตเพื่อ\nพิจารณาว่าสามารถเข้าโครงการได้หรือไม่ หากเข้าได้ทางแพทย์และโรงพยาบาลเดิมจะมีเอกสารนำส่งผู้ป่วยมาเพื่อเข้าโครงการ\n*กรณีผู้ป่วยมาติดต่อไม่ตรงวัน\nสามารถลงทะเบียนเข้า Location\n\" เปลี่ยนไตและไตเทียม \"\nและส่งผู้ป่วยติดต่อที่ชั้น 10 หน่วยเปลี่ยนไต\nเพื่อนำเอกสารเข้าระบบไว้ก่อน"
+        ],
+        "ไตวาย": [
+            "รับเฉพาะเคส Consult มาตรงนัด\nกรณีผู้ป่วยเดิมมาติดต่อไม่ตรงวันนัด\n* โทร Consult เป็นรายกรณี\n35864 \/ 35756"
+        ],
+        "Sx.HNB": [
+            "เคสผ่าตัดเต้านมแล้วไม่สามารถส่ง OPD 101 ได้ ต้องส่งต่อตาม Plan\n- Refer For CMT\n- Refer For RT"
+        ],
+        "Sx.VAS": [
+            "กรณีมาไม่ตรงวันแต่มีอาการ\n* โทร Consult เป็นรายกรณี\n35728 \/ 35729\nDVT\nส่ง\nOPD9"
+        ],
+        "Intervention": [
+            "รับเฉพาะ Case Consult\nจากห้องตรวจของมหาราชฯ เท่านั้น\nเปิดให้บริการ\n13.00 - 16.00 น."
+        ],
+        "Pain clinic": [
+            "รับเฉพาะ Case Consult จากห้องตรวจของมหาราชฯ เท่านั้น"
+        ]
+    },
+    "directory": {
+        "opd": [
+            [
+                "OPD 1",
+                "35735, 36335"
+            ],
+            [
+                "OPD 2",
+                "35736, 35739"
+            ],
+            [
+                "OPD 3",
+                "35741, 36341"
+            ],
+            [
+                "OPD 4",
+                "35742, 35720"
+            ],
+            [
+                "OPD 5",
+                "35743"
+            ],
+            [
+                "OPD 6",
+                "35745, 36692"
+            ],
+            [
+                "OPD 7",
+                "35748, 36680"
+            ],
+            [
+                "OPD Retina",
+                "35903, 35910"
+            ],
+            [
+                "OPD 9",
+                "35740, 35751"
+            ],
+            [
+                "OPD 10",
+                "35750, 35760"
+            ],
+            [
+                "OPD 20",
+                "34436, 36366"
+            ],
+            [
+                "OPD 21",
+                "35752, 36752"
+            ],
+            [
+                "OPD 22",
+                "35753, 36353"
+            ],
+            [
+                "OPD 23",
+                "35754, 36354"
+            ],
+            [
+                "OPD 24",
+                "35755, 36755"
+            ],
+            [
+                "จิตเวชเด็ก",
+                "35960"
+            ],
+            [
+                "OPD 25",
+                "35699, 36399"
+            ],
+            [
+                "OPD 26",
+                "35756, 36766"
+            ],
+            [
+                "OPD 27",
+                "35757"
+            ],
+            [
+                "Ped Cardio",
+                "35419"
+            ],
+            [
+                "OPD 28",
+                "35758, 36358"
+            ],
+            [
+                "OPD 29",
+                "35759"
+            ],
+            [
+                "OPD 101",
+                "35728, 35729"
+            ],
+            [
+                "OPD 110",
+                "34605, 35726"
+            ],
+            [
+                "OPD 108",
+                "35170, 36182"
+            ],
+            [
+                "OPD RT",
+                "34430, 35492"
+            ],
+            [
+                "Med Non",
+                "36711, 36713"
+            ],
+            [
+                "Fam med",
+                "36363"
+            ],
+            [
+                "Pain Clinic",
+                "36379"
+            ],
+            [
+                "EID",
+                "38589, 38591"
+            ],
+            [
+                "EID - TB",
+                "38723"
+            ],
+            [
+                "ดื้อยา",
+                "36338"
+            ],
+            [
+                "ศูนย์สุขภาพมช.",
+                "43181"
+            ],
+            [
+                "OPD สงฆ์",
+                "35966"
+            ],
+            [
+                "Ostomy",
+                "36527"
+            ],
+            [
+                "ทำแผล",
+                "34408"
+            ],
+            [
+                "ฉีดยา",
+                "35734"
+            ],
+            [
+                "นิติเวชชั้น 3",
+                "34433"
+            ],
+            [
+                "Triage",
+                "35677"
+            ],
+            [
+                "ER",
+                "36333"
+            ],
+            [
+                "Observe",
+                "36334, 35737"
+            ],
+            [
+                "เวชระเบียน",
+                "35636, 36647"
+            ],
+            [
+                "DNA",
+                "34560"
+            ],
+            [
+                "ICWN",
+                "35714, 35724"
+            ],
+            [
+                "Telemed",
+                "34160"
+            ]
+        ],
+        "other": [
+            [
+                "ศูนย์รับเงิน 1",
+                "35249, 35250"
+            ],
+            [
+                "ศูนย์รับเงิน 2",
+                "35247, 35248"
+            ],
+            [
+                "ศูนย์รับเงิน 3",
+                "36531"
+            ],
+            [
+                "บัตรทอง OPD",
+                "36535, 36577"
+            ],
+            [
+                "บัตรทอง IPD",
+                "35602"
+            ],
+            [
+                "ประกันสังคม",
+                "35181, 36181"
+            ],
+            [
+                "สังคมสงเคราะห์",
+                "35650"
+            ],
+            [
+                "ศูนย์จองห้อง",
+                "36385, 34489"
+            ],
+            [
+                "ห้องยา 30",
+                "35616, 36316"
+            ],
+            [
+                "ห้องยา 16",
+                "36530"
+            ],
+            [
+                "ศูนย์ส่งยา ปณ.",
+                "34005"
+            ],
+            [
+                "อุปกรณ์ฝากขาย",
+                "34428, 34429"
+            ],
+            [
+                "Lab center",
+                "35645"
+            ],
+            [
+                "ศูนย์รับ Lab",
+                "36240, 36244"
+            ],
+            [
+                "X-ray 33",
+                "35453, 35454"
+            ],
+            [
+                "นัดคิว CT",
+                "36198"
+            ],
+            [
+                "นัดคิว MMG",
+                "36554"
+            ],
+            [
+                "นัดคิว U\/S",
+                "36707"
+            ],
+            [
+                "ศูนย์สร้างเสริม",
+                "35710, 36561"
+            ],
+            [
+                "สำนักงาน OPD",
+                "35731"
+            ],
+            [
+                "ฝ่ายการ",
+                "35721"
+            ],
+            [
+                "ขอประวัติ",
+                "35601"
+            ],
+            [
+                "สนง.ผอ.",
+                "36155"
+            ],
+            [
+                "สนง.คณบดี",
+                "36144"
+            ],
+            [
+                "IT",
+                "35919"
+            ],
+            [
+                "ช่างบันไดเลื่อน",
+                "36218"
+            ],
+            [
+                "รปภ.",
+                "35500, 38700"
+            ],
+            [
+                "เปล",
+                "35692"
+            ],
+            [
+                "บ้านพักญาติ",
+                "34738"
+            ]
+        ],
+        "affiliate": [
+            [
+                "ศรีพัฒน์",
+                "36900, 36901"
+            ],
+            [
+                "ศูนย์ความเป็นเลิศ",
+                "34700, 34701"
+            ],
+            [
+                "GMC",
+                "20666"
+            ],
+            [
+                "มีบุตรยาก",
+                "34714, 34715"
+            ]
+        ]
+    },
+    "generated_at": "2026-04-29 06:19:01"
+} ;
+            renderDirectory(appData.directory);
 
-        renderList(opd_directory, 'opd-list');
-        renderList(other_directory, 'other-list');
-        renderList(affiliate_directory, 'affiliate-list');
+            function renderDirectory(dir) {
+                const container = document.getElementById('directory-content');
+                
+                const sections = [
+                    { id: 'opd', title: 'เบอร์โทรภายใน OPD', icon: 'fas fa-hospital-user', items: dir.opd },
+                    { id: 'other', title: 'หน่วยงานอื่นๆ', icon: 'fas fa-building', items: dir.other },
+                    { id: 'affiliate', title: 'โรงพยาบาลในเครือ / ศูนย์พิเศษ', icon: 'fas fa-star', items: dir.affiliate }
+                ];
 
-        document.getElementById('directory-search').addEventListener('input', function(e) {
-            const term = e.target.value.toLowerCase();
-            const rows = document.querySelectorAll('.directory-table tr');
-            
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(term) ? '' : 'none';
-            });
+                let html = '';
+                sections.forEach(sec => {
+                    html += `
+                    <section class="directory-section" data-section="${sec.id}">
+                        <div class="directory-header">
+                            <i class="${sec.icon}"></i>
+                            <h3>${sec.title}</h3>
+                        </div>
+                        <div class="directory-table-wrapper">
+                            <table class="directory-table">
+                                <tbody>`;
+                    sec.items.forEach(item => {
+                        html += `
+                                    <tr>
+                                        <td class="dept-col">${item[0]}</td>
+                                        <td class="phone-col">${item[1]}</td>
+                                    </tr>`;
+                    });
+                    html += `
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>`;
+                });
+                container.innerHTML = html;
 
-            document.querySelectorAll('.directory-section').forEach(section => {
-                const visibleRows = section.querySelectorAll('tr:not([style*="display: none"])');
-                section.style.display = visibleRows.length === 0 ? 'none' : '';
-            });
+                // Attach search event
+                document.getElementById('directory-search').addEventListener('input', function (e) {
+                    const term = e.target.value.toLowerCase();
+                    const rows = document.querySelectorAll('.directory-table tr');
+
+                    rows.forEach(row => {
+                        const text = row.textContent.toLowerCase();
+                        row.style.display = text.includes(term) ? '' : 'none';
+                    });
+
+                    document.querySelectorAll('.directory-section').forEach(section => {
+                        const visibleRows = section.querySelectorAll('tr:not([style*="display: none"])');
+                        section.style.display = visibleRows.length === 0 ? 'none' : '';
+                    });
+                });
+            }
         });
     </script>
 </body>
+
 </html>
